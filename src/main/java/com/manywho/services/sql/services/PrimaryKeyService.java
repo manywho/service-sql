@@ -19,7 +19,7 @@ public class PrimaryKeyService {
             return objectMapper.readValue(new String(decoded, "UTF-8"), new TypeReference<HashMap<String,Object>>() {});
 
         } catch (Exception e) {
-            throw new RuntimeException("The primary key is not valid. It should be json format encoded in base64 e.g. {\"id\": 1} it becomes eyJpZCI6MX0=", e);
+            throw new RuntimeException("The primary key is not valid. It should be a JSON object, then Base64 encoded, e.g. {\"id\": 1} would become eyJpZCI6MX0=", e);
         }
     }
 
