@@ -38,6 +38,17 @@ public class DefaultApiRequest {
     }
 
     public static void loadDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> requestReplacements, String expectedResponsePathFile, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {
+
+        MockHttpResponse response = loadDataRequestResponse(url, requestPathFile, requestReplacements, dispatcher);
+
+        JSONAssert.assertEquals(
+                JsonFormatUtil.getFileContentAsJson(expectedResponsePathFile),
+                response.getContentAsString(),
+                false
+        );
+    }
+
+    public static MockHttpResponse loadDataRequestResponse(String url, String requestPathFile, HashMap<String, String> requestReplacements, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {
         ObjectMapper objectMapper = new ObjectMapperContextResolver().getContext(null);
         MockHttpResponse response = new MockHttpResponse();
 
@@ -47,11 +58,7 @@ public class DefaultApiRequest {
 
         dispatcher.invoke(request, response);
 
-        JSONAssert.assertEquals(
-                JsonFormatUtil.getFileContentAsJson(expectedResponsePathFile),
-                response.getContentAsString(),
-                false
-        );
+        return response;
     }
 
     public static void saveDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> requestReplacements, String expectedResponsePathFile, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {

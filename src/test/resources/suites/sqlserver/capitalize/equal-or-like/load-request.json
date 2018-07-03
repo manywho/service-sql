@@ -111,7 +111,7 @@
   "listFilter": {
     "id": null,
     "filterByProvidedObjects": false,
-    "orderByPropertyDeveloperName": null,
+    "orderByPropertyDeveloperName": "Id",
     "orderByDirectionType": "",
     "orderBy": null,
     "limit": 0,

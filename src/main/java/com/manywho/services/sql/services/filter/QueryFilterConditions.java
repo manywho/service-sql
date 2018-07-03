@@ -137,25 +137,17 @@ public class QueryFilterConditions {
      * @param databaseType
      */
     public void addOrderBy(SelectQuery selectQuery, String orderByPropertyName, ListFilter.OrderByDirectionType direction, TableMetadata tableMetadata, DatabaseType databaseType) {
-        List<String> properties;
-
-        if (Strings.isNullOrEmpty(orderByPropertyName)) {
-            properties = tableMetadata.getPrimaryKeyNames();
-        } else {
-            properties = new ArrayList<>();
-            properties.add(orderByPropertyName);
+        if (Strings.isNullOrEmpty(orderByPropertyName) == true) {
+            // we ignore the direction because it doesn't matter if it is not sorted
+            return;
         }
 
-        OrderObject.Dir typeDirection;
+        OrderObject.Dir typeDirection = OrderObject.Dir.ASCENDING;
 
         if (direction != null && direction.equals(ListFilter.OrderByDirectionType.Descending)) {
             typeDirection = OrderObject.Dir.DESCENDING;
-        } else {
-            typeDirection = OrderObject.Dir.ASCENDING;
         }
 
-        for (String property: properties) {
-            selectQuery.addCustomOrdering(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, property)), typeDirection);
-        }
+        selectQuery.addCustomOrdering(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, orderByPropertyName)), typeDirection);
     }
 }
