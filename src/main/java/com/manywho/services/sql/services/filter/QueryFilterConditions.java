@@ -137,12 +137,17 @@ public class QueryFilterConditions {
      * @param databaseType
      */
     public void addOrderBy(SelectQuery selectQuery, String orderByPropertyName, ListFilter.OrderByDirectionType direction, TableMetadata tableMetadata, DatabaseType databaseType) {
+        OrderObject.Dir typeDirection = OrderObject.Dir.ASCENDING;
+
         if (Strings.isNullOrEmpty(orderByPropertyName) == true) {
-            // we ignore the direction because it doesn't matter if it is not sorted
+
+            if (databaseType.equals(DatabaseType.Sqlserver)) {
+                // When using Sql Server database ROW NUMBER requires an order by syntactically, this line fix the syntax without force an order by
+                selectQuery.addCustomOrdering(new CustomSql("(SELECT NULL)"), typeDirection);
+            }
+
             return;
         }
-
-        OrderObject.Dir typeDirection = OrderObject.Dir.ASCENDING;
 
         if (direction != null && direction.equals(ListFilter.OrderByDirectionType.Descending)) {
             typeDirection = OrderObject.Dir.DESCENDING;
