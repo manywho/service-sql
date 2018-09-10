@@ -10,6 +10,29 @@ import org.sql2o.Connection;
 public class DescribeTest extends ServiceFunctionalTest {
 
     @Test
+    public void testDescribeWithTypes() throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        String sql = "CREATE TABLE " + escapeTableName("country2") + "(" +
+                "id integer NOT NULL," +
+                "name character varying(255)," +
+                "description character varying(1024)," +
+                "available BOOLEAN," +
+                "CONSTRAINT country_id_pk PRIMARY KEY (id)" +
+                ");";
+
+        try (Connection connection = getSql2o().open()) {
+            connection.createQuery(sql).executeUpdate();
+        }
+
+        DefaultApiRequest.describeServiceRequestAndAssertion("/metadata",
+                "suites/postgresql/describe/with-types/metadata1-request.json",
+                configurationParameters(),
+                "suites/postgresql/describe/with-types/metadata1-response.json",
+                dispatcher
+        );
+    }
+
+    @Test
     public void testDescribeWithAliases() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
 
@@ -42,6 +65,7 @@ public class DescribeTest extends ServiceFunctionalTest {
     public void cleanDatabaseAfterEachTest() {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
+            deleteTableIfExist("country2", connection);
             deleteTableIfExist("timetest", connection);
         } catch (ClassNotFoundException e) {
         }

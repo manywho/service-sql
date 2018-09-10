@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 public class DateTimeTest extends ServiceFunctionalTest {
     @Before
-    public void setupDatabase() throws Exception {
+    public void setupDatabase() {
         DbConfigurationTest.setPropertiesIfNotInitialized("sqlserver");
     }
 

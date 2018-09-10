@@ -45,7 +45,7 @@ public class QueryParameterService {
 
         switch (type){
             case BIT:
-                throw new DataBaseTypeNotSupported("BIT");
+                return query.addParameter(paramName, Boolean.valueOf(parameterValue));
 
             case TINYINT:
                 return query.addParameter(paramName, getInteger(parameterValue));

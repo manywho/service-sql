@@ -25,7 +25,7 @@ public class ContentTypeUtil {
     public static ContentType createFromSqlType(int types, String databaseSpecificType) throws DataBaseTypeNotSupported {
         switch(types) {
             case Types.BIT:
-                throw new DataBaseTypeNotSupported("BIT");
+               return ContentType.Boolean;
 
             case Types.TINYINT:
                 return ContentType.Number;
