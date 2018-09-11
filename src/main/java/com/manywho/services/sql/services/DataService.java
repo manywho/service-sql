@@ -92,7 +92,7 @@ public class DataService {
         return mObject;
     }
 
-    public MObject insert(MObject mObject, Connection connection, TableMetadata tableMetadata, ServiceConfiguration configuration) {
+    public MObject insert(MObject mObject, Connection connection, TableMetadata tableMetadata, ServiceConfiguration configuration) throws DataBaseTypeNotSupported, ParseException {
         boolean isPostgres = configuration.getDatabaseType().equals(DatabaseType.Postgresql);
 
         String queryString = queryStrService.createQueryWithParametersForInsert(mObject, tableMetadata, configuration);
@@ -102,15 +102,11 @@ public class DataService {
         String autoIncrement = "";
 
         for (Property p : mObject.getProperties()) {
-            if (!tableMetadata.isColumnAutoincrement(p.getDeveloperName())) {
-                try {
-                    parameterSanitaizerService.addParameterValueToTheQuery(p.getDeveloperName(), p.getContentValue(),
-                            tableMetadata.getColumnsDatabaseType().get(p.getDeveloperName()), query);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
+            if (tableMetadata.isColumnAutoincrement(p.getDeveloperName())) {
                 autoIncrement = p.getDeveloperName();
+            } else {
+                parameterSanitaizerService.addParameterValueToTheQuery(p.getDeveloperName(), p.getContentValue(),
+                        tableMetadata.getColumnsDatabaseType().get(p.getDeveloperName()), query);
             }
         }
 
@@ -144,12 +140,12 @@ public class DataService {
      */
     private MObject executeInsertQuery(Query query, String autoIncrement, MObject mObject, boolean isPostgres) {
         if (Strings.isNullOrEmpty(autoIncrement)) {
-            if (isPostgres == false) {
-                query.executeUpdate();
-            } else {
+            if (isPostgres == true) {
                 // we need to fetch table because we are hardcoding "RETURNING *" the library would throw an exception if
                 // we don't execute it and then fetch the data, even if we don't need it
                 query.executeAndFetchTable();
+            } else {
+                query.executeUpdate();
             }
         } else {
             if (isPostgres == true) {
