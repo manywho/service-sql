@@ -28,7 +28,7 @@ public class MultipleKeyTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByExternalId() throws Exception {
-
+        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("city")+ "(cityname, countryname) VALUES ('Montevideo', 'Uruguay');";
             connection.createQuery(sql).executeUpdate();
@@ -44,7 +44,7 @@ public class MultipleKeyTest extends ServiceFunctionalTest {
 
     @Test
     public void testCreate() throws Exception {
-
+        
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/multiple-primary-key/create/create-request.json",
                 configurationParameters(),
