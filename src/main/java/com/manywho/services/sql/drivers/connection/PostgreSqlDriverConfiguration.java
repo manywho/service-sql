@@ -14,7 +14,7 @@ public class PostgreSqlDriverConfiguration implements DriverConfigurationInterfa
     }
 
     public String getSslConnectionString(ServiceConfiguration serviceConfiguration) {
-        return String.format("jdbc:postgresql://%s:%s/%s?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
+        return String.format("jdbc:postgresql://%s:%s/%s?ssl=true&sslmode=allow&sslfactory=org.postgresql.ssl.NonValidatingFactory",
                 serviceConfiguration.getHost(),
                 serviceConfiguration.getPort(),
                 serviceConfiguration.getDatabaseName());
