@@ -15,13 +15,56 @@ public class LoadTest extends ServiceFunctionalTest {
             String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "("+
                             "id integer NOT NULL,"+
                             "name character varying(255)," +
-                            "description character varying(1024)," +
+                            "description character varying(1024) null," +
                             "CONSTRAINT country_id_pk PRIMARY KEY (id)" +
                         ");";
 
             connection.createQuery(sqlCreateTable).executeUpdate();
         }
     }
+
+    @Test
+    public void testLoadIsEmptyData() throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        setupTableCountryTable();
+
+        try (Connection connection = getSql2o().open()) {
+            String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', null);";
+            connection.createQuery(sql).executeUpdate();
+
+            String sql2 = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('2', 'UK', 'UK description');";
+            connection.createQuery(sql2).executeUpdate();
+        }
+
+        DefaultApiRequest.loadDataRequestAndAssertion("/data",
+                "suites/common/data/load/is-empty/load-request.json",
+                configurationParameters(),
+                "suites/common/data/load/is-empty/load-response.json",
+                dispatcher
+        );
+    }
+
+    @Test
+    public void testLoadIsNotEmptyData() throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        setupTableCountryTable();
+
+        try (Connection connection = getSql2o().open()) {
+            String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', 'Uruguay description');";
+            connection.createQuery(sql).executeUpdate();
+
+            String sql2 = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('2', 'UK', null);";
+            connection.createQuery(sql2).executeUpdate();
+        }
+
+        DefaultApiRequest.loadDataRequestAndAssertion("/data",
+                "suites/common/data/load/is-not-empty/load-request.json",
+                configurationParameters(),
+                "suites/common/data/load/is-not-empty/load-response.json",
+                dispatcher
+        );
+    }
+
 
     @Test
     public void testLoadDataByExternalId() throws Exception {

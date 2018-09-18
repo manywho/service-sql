@@ -71,7 +71,7 @@ public class QueryFilterConditions {
         }
     }
 
-    private BinaryCondition getConditionFromFilterElement(ListFilterWhere filterWhere, DatabaseType databaseType) {
+    private Condition getConditionFromFilterElement(ListFilterWhere filterWhere, DatabaseType databaseType) {
 
         switch (filterWhere.getCriteriaType()) {
             case Equal:
@@ -93,8 +93,11 @@ public class QueryFilterConditions {
             case EndsWith:
                return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), "%" + filterWhere.getContentValue());
             case IsEmpty:
-
-               return BinaryCondition.equalTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), BinaryCondition.EMPTY);
+                if (Strings.isNullOrEmpty(filterWhere.getContentValue()) == false && filterWhere.getContentValue().toLowerCase().equals("true")) {
+                    return UnaryCondition.isNull(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())));
+                } else {
+                    return UnaryCondition.isNotNull(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())));
+                }
             default:
                 break;
         }
