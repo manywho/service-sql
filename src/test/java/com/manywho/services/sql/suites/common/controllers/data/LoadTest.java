@@ -25,7 +25,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadIsEmptyData() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
@@ -46,7 +45,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadIsNotEmptyData() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
