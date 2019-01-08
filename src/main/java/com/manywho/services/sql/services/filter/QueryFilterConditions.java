@@ -75,8 +75,16 @@ public class QueryFilterConditions {
         }
     }
 
-    private Object prepareObject(TableMetadata tableMetadata, String coulumnName, String contentValue) {
+    private Object prepareObjectForMysql(DatabaseType databaseType, TableMetadata tableMetadata, String coulumnName, String contentValue) {
+        if (databaseType != DatabaseType.Mysql) {
+            return contentValue;
+        }
+
+        // postgres automatically cast to the right value here
+        // todo check behaviour of SQL Server
+
         ContentType contentType = tableMetadata.getColumns().getOrDefault(coulumnName, ContentType.String);
+
         switch (contentType) {
             case Boolean:
                 return new BooleanValueObject(Boolean.valueOf(contentValue));
@@ -89,7 +97,7 @@ public class QueryFilterConditions {
     }
 
     private Condition getConditionFromFilterElement(ListFilterWhere filterWhere, DatabaseType databaseType, TableMetadata tableMetadata) {
-        Object object = prepareObject(tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
+        Object object = prepareObjectForMysql(databaseType, tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
 
         switch (filterWhere.getCriteriaType()) {
             case Equal:
