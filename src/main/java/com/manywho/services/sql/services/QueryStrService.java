@@ -90,7 +90,7 @@ public class QueryStrService {
         objectDataType.setProperties(aliasService.setPropertiesOriginalName(tableMetadata, objectDataType.getProperties()));
 
         queryFilterConditions.addSearch(selectQuery, filter.getSearch(), objectDataType.getProperties(), tableMetadata.getColumnsDatabaseType(), configuration.getDatabaseType());
-        queryFilterConditions.addWhere(selectQuery, filter.getWhere(), filter.getComparisonType(), configuration.getDatabaseType());
+        queryFilterConditions.addWhere(selectQuery, filter.getWhere(), filter.getComparisonType(), configuration.getDatabaseType(), tableMetadata);
         queryFilterConditions.addOffset(selectQuery, configuration.getDatabaseType(), filter.getOffset(), filter.getLimit());
         queryFilterConditions.addOrderBy(selectQuery, filter.getOrderByPropertyDeveloperName(),
                 filter.getOrderByDirectionType(), tableMetadata, configuration.getDatabaseType());
