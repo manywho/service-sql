@@ -82,8 +82,8 @@ public class QueryParameterService {
                 return query.addParameter(paramName, parameterValue);
 
             case DATE:
-                throw new DataBaseTypeNotSupported("DATE");
-
+                DateTime dateTime = new DateTime( parameterValue) ;
+                return query.addParameter(paramName, dateTime);
             case TIME:
                 throw new DataBaseTypeNotSupported("TIME");
 

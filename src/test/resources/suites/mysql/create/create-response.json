@@ -3,7 +3,7 @@
   "objectData": [{
     "internalId": null,
     "externalId": "eyJpZCI6IjEifQ==",
-    "developerName": "country",
+    "developerName": "country1",
     "typeElementId": null,
     "order": 0,
     "properties": [{
@@ -25,6 +25,20 @@
       "developerName": "big",
       "contentType": "ContentBoolean",
       "contentValue": "true",
+      "contentFormat": null,
+      "objectData": []
+    }, {
+      "typeElementPropertyId": null,
+      "developerName": "created",
+      "contentType": "ContentDateTime",
+      "contentValue": "1982-11-01T00:00:00Z",
+      "contentFormat": null,
+      "objectData": []
+    }, {
+      "typeElementPropertyId": null,
+      "developerName": "updated",
+      "contentType": "ContentDateTime",
+      "contentValue": "1982-11-01T01:02:03Z",
       "contentFormat": null,
       "objectData": []
     }],

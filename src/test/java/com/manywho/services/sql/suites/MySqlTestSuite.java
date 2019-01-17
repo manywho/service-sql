@@ -22,7 +22,8 @@ import org.junit.runners.Suite;
         LoadWithoutOrderBy.class, // not for SqlServer
         // mysql
         CapitalLetterTest.class,
-        AutoIncrementTest.class
+        AutoIncrementTest.class,
+        com.manywho.services.sql.suites.mysql.data.SaveTest.class
 })
 public class MySqlTestSuite {
     @BeforeClass
