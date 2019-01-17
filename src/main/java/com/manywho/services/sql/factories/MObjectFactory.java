@@ -2,6 +2,7 @@ package com.manywho.services.sql.factories;
 
 import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.Property;
+import com.manywho.services.sql.date.DateSerializer;
 import com.manywho.services.sql.entities.TableMetadata;
 import com.manywho.services.sql.services.AliasService;
 import com.manywho.services.sql.services.DescribeService;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MObjectFactory {
     private DescribeService describeService;
@@ -38,9 +40,9 @@ public class MObjectFactory {
 
             for (Property property : properties) {
                 if (property.getContentType() == com.manywho.sdk.api.ContentType.DateTime) {
-                    describeService.populatePropertyDate(property.getDeveloperName(), row.getObject(property.getDeveloperName()), properties);
+                    populatePropertyDate(property.getDeveloperName(), row.getObject(property.getDeveloperName()), properties);
                 } else {
-                    describeService.populateProperty(property.getDeveloperName(), row.getString(property.getDeveloperName()), properties);
+                    populateProperty(property.getDeveloperName(), row.getString(property.getDeveloperName()), properties);
                 }
             }
 
@@ -58,5 +60,17 @@ public class MObjectFactory {
 
     private void renamePropertiesUsingAliases(TableMetadata tableMetadata, List<Property> originalProperties) {
         originalProperties.forEach(p -> p.setDeveloperName(aliasService.getColumnAliasOrName(tableMetadata, p.getDeveloperName())));
+    }
+
+    private void populateProperty(String propertyName, String propertyValue, List<Property> propertyList) {
+        propertyList.stream()
+                .filter(p -> Objects.equals(p.getDeveloperName(), propertyName))
+                .forEach(p-> p.setContentValue(propertyValue));
+    }
+
+    private void populatePropertyDate(String propertyName, Object propertyValue, List<Property> propertyList) {
+        propertyList.stream()
+                .filter(p -> Objects.equals(p.getDeveloperName(), propertyName))
+                .forEach(p-> p.setContentValue(DateSerializer.serializeDate(p.getDeveloperName(), propertyValue)));
     }
 }
