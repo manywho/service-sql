@@ -15,6 +15,8 @@ import com.manywho.services.sql.entities.TableMetadata;
 import com.manywho.services.sql.utilities.ScapeForTablesUtil;
 
 import java.sql.JDBCType;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,9 +91,13 @@ public class QueryFilterConditions {
             case Boolean:
                 return new BooleanValueObject(Boolean.valueOf(contentValue));
             case Number:
-                return new NumberValueObject(contentValue);
+                try {
+                    return new NumberValueObject(NumberFormat.getInstance().parse(contentValue));
+                } catch (ParseException e) {
+                    throw new RuntimeException(String.format("The value of %s is not a valid number", coulumnName));
+                }
             default:
-                    return contentValue;
+                return contentValue;
         }
 
     }

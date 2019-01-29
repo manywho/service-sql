@@ -138,7 +138,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
                 LOGGER.error("findAll filter: " + objectMapper.writeValueAsString(filter), e);
             } catch (Exception ignored) {}
 
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
