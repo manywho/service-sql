@@ -1,4 +1,4 @@
-package com.manywho.services.sql.suites.common;
+package com.manywho.services.sql.suites.postgresql;
 
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.DbConfigurationTest;
