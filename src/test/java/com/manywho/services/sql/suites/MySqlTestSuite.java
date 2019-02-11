@@ -1,6 +1,7 @@
 package com.manywho.services.sql.suites;
 
 import com.manywho.services.sql.DbConfigurationTest;
+import com.manywho.services.sql.suites.common.ZeroColumnTableTest;
 import com.manywho.services.sql.suites.common.controllers.data.LoadTest;
 import com.manywho.services.sql.suites.common.controllers.data.LoadWithoutOrderBy;
 import com.manywho.services.sql.suites.common.controllers.data.MultipleKeyTest;
@@ -20,6 +21,7 @@ import org.junit.runners.Suite;
         SaveTest.class,
         DescribeTest.class,
         LoadWithoutOrderBy.class, // not for SqlServer
+        ZeroColumnTableTest.class,
         // mysql
         CapitalLetterTest.class,
         AutoIncrementTest.class,

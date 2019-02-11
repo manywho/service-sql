@@ -23,7 +23,10 @@ public class DescribeManager {
     public List<TypeElement> getListTypeElementFromTableMetadata(Connection connection, ServiceConfiguration serviceConfiguration) throws Exception {
         List<TypeElement> listOfTypeElements = new ArrayList<>();
         for (TableMetadata table : metadataManager.getMetadataTables(connection, serviceConfiguration)) {
-            listOfTypeElements.add(describeService.createTypeElementFromTableMetadata(table));
+            TypeElement typeElement = describeService.createTypeElementFromTableMetadata(table);
+            if (typeElement.getProperties().size() > 0) {
+                listOfTypeElements.add(typeElement);
+            }
         }
         
         return listOfTypeElements;
