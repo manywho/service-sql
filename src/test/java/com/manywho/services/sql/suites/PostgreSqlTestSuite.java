@@ -7,7 +7,6 @@ import com.manywho.services.sql.suites.common.controllers.data.MultipleKeyTest;
 import com.manywho.services.sql.suites.common.controllers.data.SaveTest;
 import com.manywho.services.sql.suites.common.controllers.describe.DescribeTest;
 import com.manywho.services.sql.suites.postgresql.data.*;
-import com.manywho.services.sql.suites.postgresql.ZeroColumnTableTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -21,7 +20,6 @@ import org.junit.runners.Suite;
         DescribeTest.class,
         LoadWithoutOrderBy.class, // not for SqlServer
         //postgresql
-        ZeroColumnTableTest.class,
         DateTimeTest.class,
         UuidTest.class,
         CapitalLetterTest.class,
