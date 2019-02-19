@@ -1,6 +1,7 @@
 package com.manywho.services.sql.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
 import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataType;
@@ -72,7 +73,11 @@ public class Database implements RawDatabase<ServiceConfiguration> {
 
     @Override
     public List<MObject> create(ServiceConfiguration configuration, List<MObject> objects) {
-        return null;
+        List<MObject> objectsCreated = Lists.newArrayList();
+        objects.forEach((object) -> {
+            objectsCreated.add(create(configuration, object));
+        });
+        return objectsCreated;
     }
 
     @Override
@@ -97,8 +102,9 @@ public class Database implements RawDatabase<ServiceConfiguration> {
 
     @Override
     public void delete(ServiceConfiguration configuration, List<MObject> objects) {
-        //todo delete list of object;
-
+        objects.forEach((object) -> {
+            delete(configuration, object);
+        });
         return;
     }
 
@@ -173,6 +179,10 @@ public class Database implements RawDatabase<ServiceConfiguration> {
 
     @Override
     public List<MObject> update(ServiceConfiguration configuration, List<MObject> objects) {
-        return null;
+        List<MObject> objectsUpdated = Lists.newArrayList();
+        objects.forEach((object) -> {
+            objectsUpdated.add(update(configuration, object));
+        });
+        return objectsUpdated;
     }
 }
