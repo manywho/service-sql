@@ -1,6 +1,7 @@
 package com.manywho.services.sql.suites;
 
 import com.manywho.services.sql.DbConfigurationTest;
+import com.manywho.services.sql.suites.common.controllers.data.DeleteTest;
 import com.manywho.services.sql.suites.common.controllers.data.LoadTest;
 import com.manywho.services.sql.suites.common.controllers.data.LoadWithoutOrderBy;
 import com.manywho.services.sql.suites.common.controllers.data.MultipleKeyTest;
@@ -17,6 +18,7 @@ import org.junit.runners.Suite;
         LoadTest.class,
         MultipleKeyTest.class,
         SaveTest.class,
+        DeleteTest.class,
         DescribeTest.class,
         LoadWithoutOrderBy.class, // not for SqlServer
         //postgresql
