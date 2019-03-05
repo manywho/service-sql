@@ -73,10 +73,7 @@ public class SaveTest extends ServiceFunctionalTest {
     public void testUpdateMissingId () throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
-        try (Connection connection = getSql2o().open()) {
-            String sql = "CREATE TABLE " + escapeTableName("testtable") + " (id integer primary key auto_increment NOT NULL, data text);";
-            connection.createQuery(sql).executeUpdate();
-        }
+        createTestTable();
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/save/update/update-missing-request.json",
@@ -88,7 +85,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
     private void createTestTable() throws Exception {
         try (Connection connection = getSql2o().open()) {
-            String sql = "CREATE TABLE " + escapeTableName("testtable") + " (id integer primary key auto_increment NOT NULL, data text);";
+            String sql = "CREATE TABLE " + escapeTableName("testtable") + " (id integer primary key NOT NULL, data text);";
             connection.createQuery(sql).executeUpdate();
         }
     }
@@ -122,7 +119,7 @@ public class SaveTest extends ServiceFunctionalTest {
     }
 
     @Test
-    public void createMulitipleTest() throws Exception {
+    public void createMultipleTest() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
 
         createTestTable();
@@ -136,13 +133,13 @@ public class SaveTest extends ServiceFunctionalTest {
     }
 
     @Test
-    public void updateMulitipleTest() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+    public void updateMultipleTest() throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
         createTestTable();
 
-        insertToTestTable("first");
-        insertToTestTable("second");
+        insertToTestTable(1,"first");
+        insertToTestTable(2,"second");
 
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
@@ -159,7 +156,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
         createTestTable();
 
-        insertToTestTable("first");
+        insertToTestTable(1,"first");
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/save/createAndUpdate/create-update-request.json",
@@ -175,7 +172,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
         createTestTable();
 
-        insertToTestTable("first");
+        insertToTestTable(1,"first");
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/save/update/update-multiple-missing-request.json",

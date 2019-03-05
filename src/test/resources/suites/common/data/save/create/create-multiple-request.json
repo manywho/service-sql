@@ -139,7 +139,7 @@
                 {
                     "contentFormat": null,
                     "contentType": "ContentNumber",
-                    "contentValue": "0",
+                    "contentValue": "1",
                     "developerName": "id",
                     "objectData": null,
                     "typeElementId": null,
@@ -167,7 +167,7 @@
                 {
                     "contentFormat": null,
                     "contentType": "ContentNumber",
-                    "contentValue": "1",
+                    "contentValue": "2",
                     "developerName": "id",
                     "objectData": null,
                     "typeElementId": null,

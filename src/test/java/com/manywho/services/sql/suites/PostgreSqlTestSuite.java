@@ -26,7 +26,6 @@ import org.junit.runners.Suite;
         UuidTest.class,
         CapitalLetterTest.class,
         AutoIncrementTest.class,
-        DeleteTest.class,
         com.manywho.services.sql.suites.postgresql.data.LoadTest.class,
         com.manywho.services.sql.suites.postgresql.data.DeleteTest.class,
         com.manywho.services.sql.suites.postgresql.data.SaveTest.class,

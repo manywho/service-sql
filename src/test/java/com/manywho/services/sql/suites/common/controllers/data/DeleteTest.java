@@ -46,14 +46,10 @@ public class DeleteTest extends ServiceFunctionalTest {
     public void testDeleteMultipleDataByExternalId() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         try (Connection connection = getSql2o().open()) {
-            String sqlCreateTable = "CREATE TABLE " + escapeTableName("testtable") +
-                    "(" +
-                    "id integer primary key auto_increment," +
-                    "data text" +
-                    ");";
+            String sqlCreateTable = "CREATE TABLE " + escapeTableName("testtable") + "(id integer primary key, data text);";
             connection.createQuery(sqlCreateTable).executeUpdate();
 
-            String sqlInsert = "INSERT INTO " + escapeTableName("testtable")+ " (data) VALUES ('test1'), ('test2');";
+            String sqlInsert = "INSERT INTO " + escapeTableName("testtable")+ " (id, data) VALUES (1, 'test1'), (2, 'test2');";
             connection.createQuery(sqlInsert).executeUpdate();
         } catch (Exception e) {
             throw e;
@@ -90,14 +86,10 @@ public class DeleteTest extends ServiceFunctionalTest {
     public void testDeleteMultipleMissingDataByExternalId() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         try (Connection connection = getSql2o().open()) {
-            String sqlCreateTable = "CREATE TABLE " + escapeTableName("testtable") +
-                    "(" +
-                    "id integer primary key auto_increment," +
-                    "data text" +
-                    ");";
+            String sqlCreateTable = "CREATE TABLE " + escapeTableName("testtable") + "(id integer primary key, data text);";
             connection.createQuery(sqlCreateTable).executeUpdate();
 
-            String sqlInsert = "INSERT INTO " + escapeTableName("testtable")+ "(data) VALUES ('test1');";
+            String sqlInsert = "INSERT INTO " + escapeTableName("testtable")+ "(id, data) VALUES (1, 'test1');";
             connection.createQuery(sqlInsert).executeUpdate();
         } catch (Exception e) {
             throw e;
