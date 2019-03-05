@@ -1,0 +1,58 @@
+{
+    "culture": null,
+    "objectData": [
+        {
+            "internalId": null,
+            "externalId": "eyJpZCI6IjIifQ==",
+            "developerName": "testtable",
+            "typeElementId": null,
+            "order": 0,
+            "properties": [
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "id",
+                    "contentType": "ContentNumber",
+                    "contentValue": "2",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "data",
+                    "contentType": "ContentString",
+                    "contentValue": "test2",
+                    "contentFormat": null,
+                    "objectData": []
+                }
+            ],
+            "isSelected": false
+        },
+        {
+            "internalId": null,
+            "externalId": "eyJpZCI6IjEifQ==",
+            "developerName": "testtable",
+            "typeElementId": null,
+            "order": 0,
+            "properties": [
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "id",
+                    "contentType": "ContentNumber",
+                    "contentValue": "1",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "data",
+                    "contentType": "ContentString",
+                    "contentValue": "test1",
+                    "contentFormat": null,
+                    "objectData": []
+                }
+            ],
+            "isSelected": false
+        }
+    ],
+    "hasMoreResults": false
+}
