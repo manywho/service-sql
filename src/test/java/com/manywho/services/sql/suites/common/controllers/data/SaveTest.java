@@ -2,9 +2,11 @@ package com.manywho.services.sql.suites.common.controllers.data;
 
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.DbConfigurationTest;
+import com.manywho.services.sql.exceptions.RecordNotFoundException;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.Assert;
 import org.sql2o.Connection;
 
 import static junit.framework.TestCase.assertEquals;
@@ -74,13 +76,26 @@ public class SaveTest extends ServiceFunctionalTest {
         DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
         createTestTable();
-
-        DefaultApiRequest.saveDataRequestAndAssertion("/data",
-                "suites/common/data/save/update/update-missing-request.json",
-                configurationParameters(),
-                "suites/common/data/save/update/update-missing-response.json",
-                dispatcher
-        );
+        // ::TODO:: fix annoying JBoss exception hack below...
+        // stupid hack to check the exception as JBoss is burying my exception in an unhandled exception. I tried
+        // setting (expect=RecordNotShownException.class) on the @Test however, JBoss is finding this as an unhandled
+        // exception and maybe wrapping it in a unhandled? so we have to catch it and check it's an instance of!
+        try {
+            DefaultApiRequest.saveDataRequestAndAssertion("/data",
+                    "suites/common/data/save/update/update-missing-request.json",
+                    configurationParameters(),
+                    "suites/common/data/save/update/update-missing-response.json",
+                    dispatcher
+            );
+        } catch (Exception ex) {
+            if (ex.getCause() instanceof RecordNotFoundException) {
+                return;
+            }
+            ex.printStackTrace();
+            Assert.fail("Unexpected exception: " +ex);
+            throw ex;
+        }
+        Assert.fail("Expected RecordNotFoundException");
     }
 
     private void createTestTable() throws Exception {
@@ -90,17 +105,6 @@ public class SaveTest extends ServiceFunctionalTest {
         }
     }
 
-    private void insertToTestTable(String data) throws Exception {
-        try (Connection connection = getSql2o().open()) {
-            String sql = "INSERT INTO " + escapeTableName("testtable") + " (data) VALUES ('" + data + "');";
-            connection.createQuery(sql).executeUpdate();
-        }
-    }
-
-    // thinking about taking the auto increment off the id so we manually set it
-    // and 1) know what it will be instead of relying on what number the (SQL)
-    // engine decides and 2) we then don't need to concern ourselves with how to
-    // auto increment and check the numbers in this test
     private void insertToTestTable(int id, String data) throws Exception {
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("testtable") + " (id, data) VALUES ('" + id + "', '" + data + "');";

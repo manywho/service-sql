@@ -157,7 +157,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
                     object.getDeveloperName());
 
             object = aliasService.getMObjectWithoutAliases(object, tableMetadata);
-            this.dataManager.update(connection, configuration, tableMetadata, object);
+            object = this.dataManager.update(connection, configuration, tableMetadata, object);
             List<MObject> mObjectList = this.dataManager.load(connection, configuration, tableMetadata,
                     primaryKeyService.deserializePrimaryKey(object.getExternalId()));
 

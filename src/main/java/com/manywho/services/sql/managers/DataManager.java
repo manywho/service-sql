@@ -53,23 +53,16 @@ public class DataManager {
     }
 
     public MObject update(Connection connection, ServiceConfiguration configuration, TableMetadata tableMetadata, MObject mObject) throws Exception {
-
         HashMap<String, String> primaryKeyHashMap = primaryKeyService.deserializePrimaryKey(mObject.getExternalId());
-        dataService.update(mObject, connection, tableMetadata, primaryKeyHashMap, configuration);
-
-        return dataService.fetchByPrimaryKey(tableMetadata, connection, primaryKeyHashMap, configuration).get(0);
+        return dataService.update(mObject, connection, tableMetadata, primaryKeyHashMap, configuration);
     }
 
     public MObject create(Connection connection, ServiceConfiguration configuration, TableMetadata tableMetadata, MObject mObject) throws Exception {
-
-        dataService.insert(mObject, connection, tableMetadata, configuration);
-
-        return mObject;
+        return dataService.insert(mObject, connection, tableMetadata, configuration);
     }
 
     public void delete(Sql2o sql2o, ServiceConfiguration configuration, TableMetadata tableMetadata,
                        HashMap<String, String> id) throws Exception {
-
         dataService.deleteByPrimaryKey(tableMetadata, sql2o, id, configuration);
     }
 }

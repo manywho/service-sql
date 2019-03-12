@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import com.manywho.sdk.api.run.elements.type.ObjectDataRequest;
 import com.manywho.sdk.services.jaxrs.resolvers.ObjectMapperContextResolver;
+import com.manywho.services.sql.exceptions.RecordNotFoundException;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
@@ -61,7 +62,7 @@ public class DefaultApiRequest {
         return response;
     }
 
-    public static void saveDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> requestReplacements, String expectedResponsePathFile, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {
+    public static void saveDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> requestReplacements, String expectedResponsePathFile, Dispatcher dispatcher) throws RecordNotFoundException, IOException, URISyntaxException, JSONException {
 
         ObjectMapper objectMapper = new ObjectMapperContextResolver().getContext(null);
         MockHttpResponse response = new MockHttpResponse();
