@@ -89,6 +89,7 @@ public class SaveTest extends ServiceFunctionalTest {
             );
         } catch (Exception ex) {
             if (ex.getCause() instanceof RecordNotFoundException) {
+                assertCountOfTestTable(0);
                 return;
             }
             ex.printStackTrace();
@@ -117,6 +118,16 @@ public class SaveTest extends ServiceFunctionalTest {
             String sql = "SELECT count(*) From " + escapeTableName("testtable") + ";";
             int found = connection.createQuery(sql).executeScalar(Integer.class);
             assertEquals(expected, found);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private void assertIndexEqualsTestTable (int index, String expected) throws Exception {
+        try (Connection connection = getSql2o().open()) {
+            String sql = "SELECT data from " + escapeTableName("testtable") + " where id = '"+index+"';";
+            String response = connection.createQuery(sql).executeScalar(String.class);
+            assertEquals(expected, response);
         } catch (Exception e) {
             throw e;
         }
@@ -187,6 +198,8 @@ public class SaveTest extends ServiceFunctionalTest {
             );
         } catch (Exception ex) {
             if (ex.getCause() instanceof RecordNotFoundException) {
+                assertCountOfTestTable(1);
+                assertIndexEqualsTestTable(1, "first");
                 return;
             }
             ex.printStackTrace();
