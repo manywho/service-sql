@@ -198,6 +198,8 @@ public class Database implements RawDatabase<ServiceConfiguration> {
                 }
             });
 
+            connection.commit();
+
             objectsUpdated.forEach((object) -> {
                 try {
                     TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration,
@@ -216,8 +218,6 @@ public class Database implements RawDatabase<ServiceConfiguration> {
                     throw new RecordNotFoundException();
                 }
             });
-
-            connection.commit();
         }
         return updatedObjects;
     }
