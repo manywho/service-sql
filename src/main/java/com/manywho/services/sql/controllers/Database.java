@@ -178,11 +178,47 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public List<MObject> update(ServiceConfiguration configuration, List<MObject> objects) {
+    public List<MObject> update(ServiceConfiguration configuration, List<MObject> objects) throws RecordNotFoundException {
+        Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
+
         List<MObject> objectsUpdated = Lists.newArrayList();
-        objects.forEach((object) -> {
-            objectsUpdated.add(update(configuration, object));
-        });
-        return objectsUpdated;
+        List<MObject> updatedObjects = Lists.newArrayList();
+
+        try (Connection connection = sql2o.beginTransaction()) {
+
+            objects.forEach((object) -> {
+                try {
+                    TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration,
+                            object.getDeveloperName());
+
+                    object = aliasService.getMObjectWithoutAliases(object, tableMetadata);
+                    objectsUpdated.add(this.dataManager.update(connection, configuration, tableMetadata, object));
+                } catch (Exception e) {
+                    throw new RecordNotFoundException();
+                }
+            });
+
+            objectsUpdated.forEach((object) -> {
+                try {
+                    TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration,
+                            object.getDeveloperName());
+
+                    object = aliasService.getMObjectWithoutAliases(object, tableMetadata);
+                    List<MObject> mObjectList = this.dataManager.load(connection, configuration, tableMetadata,
+                            primaryKeyService.deserializePrimaryKey(object.getExternalId()));
+                    if (mObjectList.size() > 0) {
+                        MObject mObject = mObjectList.get(0);
+                        updatedObjects.add(this.aliasService.getMObjectWithAliases(mObject, tableMetadata));
+                    } else {
+                        throw new RecordNotFoundException();
+                    }
+                } catch (Exception e) {
+                    throw new RecordNotFoundException();
+                }
+            });
+
+            connection.commit();
+        }
+        return updatedObjects;
     }
 }
