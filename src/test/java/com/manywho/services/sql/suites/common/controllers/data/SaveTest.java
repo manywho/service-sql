@@ -14,7 +14,7 @@ import static junit.framework.TestCase.assertEquals;
 public class SaveTest extends ServiceFunctionalTest {
     @Test
     public void testCreate() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
         try (Connection connection = getSql2o().open()) {
             String sql = "CREATE TABLE " + escapeTableName("country") + "(" +
                     "id integer NOT NULL," +
@@ -41,7 +41,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
     @Test
     public void testUpdate() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
         try (Connection connection = getSql2o().open()) {
             String sql = "CREATE TABLE " + escapeTableName("country") + "(" +
                     "id integer NOT NULL," +
@@ -124,7 +124,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
     @Test
     public void createMultipleTest() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
         createTestTable();
 
@@ -156,7 +156,7 @@ public class SaveTest extends ServiceFunctionalTest {
 
     @Test
     public void updateAndCreateTest() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
         createTestTable();
 
@@ -178,12 +178,22 @@ public class SaveTest extends ServiceFunctionalTest {
 
         insertToTestTable(1,"first");
 
-        DefaultApiRequest.saveDataRequestAndAssertion("/data",
-                "suites/common/data/save/update/update-multiple-missing-request.json",
-                configurationParameters(),
-                "suites/common/data/save/update/update-multiple-missing-response.json",
-                dispatcher
-        );
+        try {
+            DefaultApiRequest.saveDataRequestAndAssertion("/data",
+                    "suites/common/data/save/update/update-multiple-missing-request.json",
+                    configurationParameters(),
+                    "suites/common/data/save/update/update-multiple-missing-response.json",
+                    dispatcher
+            );
+        } catch (Exception ex) {
+            if (ex.getCause() instanceof RecordNotFoundException) {
+                return;
+            }
+            ex.printStackTrace();
+            Assert.fail("Unexpected exception: " +ex);
+            throw ex;
+        }
+        Assert.fail("Expected RecordNotFoundException");
     }
 
     @After
