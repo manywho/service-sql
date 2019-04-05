@@ -55,13 +55,31 @@ public class QueryStrService {
                 scapeForTablesUtil.scapeTableName(configuration.getDatabaseType(), tableMetadata.getSchemaName(), tableMetadata.getTableName()));
 
         for(Property p : mObject.getProperties()) {
+            // definitely don't update auto increments! :) ::TODO:: there is scope where we could update the auto
+            // increment to one more than the max of the column after such an update but future work maybe
            if(!tableMetadata.isColumnAutoincrement(p.getDeveloperName())) {
                updateQuery.addCustomSetClause(new CustomSql(ScapeForTablesUtil.scapeCollumnName(configuration.getDatabaseType(), p.getDeveloperName())), new CustomSql(":" + p.getDeveloperName()));
            }
         }
 
         for (String key: primaryKeyNames) {
-            updateQuery.addCondition(BinaryCondition.equalTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(configuration.getDatabaseType(),key)), new CustomSql(":" + key)));
+            updateQuery.addCondition(
+                    BinaryCondition.equalTo(
+                            new CustomSql(
+                                    ScapeForTablesUtil.scapeCollumnName(
+                                            configuration.getDatabaseType(),
+                                            key
+                                    )
+                            ),
+                            // here I'm adding the primary key in with a prefix as we're making them named parameters
+                            // and not numbered so that if we want to update the primary key when we select in a
+                            // condition by the primary key we don't accidentally add the wrong value to the primary key
+                            // ::TODO:: this should probably be a class variable somewhere or like a constant
+                            // ::TODO:: it may be worth doing the same with the others so that we don't trip over--...
+                            // ourselves if someone names a column "keyid" and also has a primary key of "id"...
+                            new CustomSql(":key" + key)
+                    )
+            );
         }
 
         return updateQuery.validate().toString();

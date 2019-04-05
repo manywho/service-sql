@@ -82,6 +82,14 @@ public class DataService {
                     query);
         }
 
+        // this has been separated and added as a secondary task so that if you update the primary key and also select
+        // by the primary key and have, as we have, the parameters named and not numbered it will try and add the same
+        // named parameter twice. This is fine as it will create the query successfully, however, when you go to add the
+        // value it will put the first value you add in both places which could be quite dangerous in certain situations
+        for (Map.Entry<String, String> entry : primaryKeyHashMap.entrySet()) {
+            parameterSanitaizerService.addPrimaryKeyParameterValueToTheQuery(entry.getKey(), entry.getValue(), metadataTable.getColumnsDatabaseType().get(entry.getKey()), query);
+        }
+
         try {
             query.setCaseSensitive(true).executeUpdate();
         } catch (RuntimeException ex) {
@@ -98,7 +106,7 @@ public class DataService {
         String queryString = queryStrService.createQueryWithParametersForInsert(mObject, tableMetadata, configuration);
         Query query = createInsertQuery(connection, queryString, isPostgres);
 
-        //todo we should support more than one autoincrement
+        //::TODO:: we should support more than one autoincrement
         String autoIncrement = "";
 
         for (Property p : mObject.getProperties()) {

@@ -14,8 +14,31 @@ import java.text.ParseException;
 import java.util.UUID;
 
 public class QueryParameterService {
+
     /**
-     * This class need to be updated whith ContentTypeUtil
+     * Add a primary key value to the parameterised query (calls add parameter but with a prefix on the parameter name)
+     *
+     * @param paramName the actual name of the column
+     * @param parameterValue the value to add
+     * @param databaseType the database type
+     * @param query the query object
+     * @return the new query object with the added value
+     * @exception DataBaseTypeNotSupported if the database value type is not supported
+     * @exception ParseException ...
+     */
+    public Query addPrimaryKeyParameterValueToTheQuery(String paramName, String parameterValue, String databaseType, Query query) throws DataBaseTypeNotSupported, ParseException {
+        return addParameterValueToTheQuery(
+                // ::TODO:: this should probably be a class var or a const see also QueryStringService maybe should be
+                // in PrimaryKeyService
+                "key"+paramName,
+                parameterValue,
+                databaseType,
+                query
+        );
+    }
+
+    /**
+     * This class need to be updated with ContentTypeUtil
      *
      *
      * @param paramName

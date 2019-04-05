@@ -52,9 +52,22 @@ public class DataManager {
         }
     }
 
+    /**
+     * runs the database update in the service depending on the changes in the MObject given, returns the MObject with
+     * an updated primary key
+     *
+     * @param connection the Sql2o connection object, can be either a standard object or a transaction
+     * @param configuration the database configuration
+     * @param tableMetadata the table metadata
+     * @param mObject the mobject with the changes made in it's properties and a primary key set in the external ID
+     * @return the mobject with an updated primary key, if the update worked then what was asked for is set.
+     * @exception Exception if it can't deserialise the primary key or if the update fails
+     */
     public MObject update(Connection connection, ServiceConfiguration configuration, TableMetadata tableMetadata, MObject mObject) throws Exception {
         HashMap<String, String> primaryKeyHashMap = primaryKeyService.deserializePrimaryKey(mObject.getExternalId());
-        return dataService.update(mObject, connection, tableMetadata, primaryKeyHashMap, configuration);
+        mObject = dataService.update(mObject, connection, tableMetadata, primaryKeyHashMap, configuration);
+        mObject.setExternalId(primaryKeyService.serializePrimaryKey(primaryKeyService.updateFromObject(primaryKeyHashMap,mObject)));
+        return mObject;
     }
 
     public MObject create(Connection connection, ServiceConfiguration configuration, TableMetadata tableMetadata, MObject mObject) throws Exception {

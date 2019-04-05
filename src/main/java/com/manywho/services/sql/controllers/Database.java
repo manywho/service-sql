@@ -149,32 +149,18 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public MObject update(ServiceConfiguration configuration, MObject object) {
+    public MObject update(ServiceConfiguration configuration, MObject object) throws  RecordNotFoundException{
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
-
         try (Connection connection = sql2o.open()) {
-            TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration,
-                    object.getDeveloperName());
-
-            object = aliasService.getMObjectWithoutAliases(object, tableMetadata);
-            object = this.dataManager.update(connection, configuration, tableMetadata, object);
-            List<MObject> mObjectList = this.dataManager.load(connection, configuration, tableMetadata,
-                    primaryKeyService.deserializePrimaryKey(object.getExternalId()));
-
-            if (mObjectList.size() > 0) {
-                MObject mObject = mObjectList.get(0);
-                return this.aliasService.getMObjectWithAliases(mObject, tableMetadata);
-            }
-
+            return doUpdate(connection, configuration, object);
+        } catch (RecordNotFoundException e) {
+            throw e;
         } catch (Exception e) {
             try {
                 LOGGER.error("update MObject: " + objectMapper.writeValueAsString(object), e);
             } catch (Exception ignored) {}
-
             throw new RuntimeException(e);
         }
-
-        throw new RecordNotFoundException();
     }
 
     @Override
@@ -220,5 +206,30 @@ public class Database implements RawDatabase<ServiceConfiguration> {
             });
         }
         return updatedObjects;
+    }
+
+    /**
+     * Does the actual update of the object; will get the table metadata, gets the column names from the alias service,
+     * runs the update, then returns the object with the alias's if they're available, ::TODO:: should probably check if
+     * the incoming object was using aliases in the first place and only return the aliases if they were set, however,
+     * this should probably probably be the remit of the alias service... (infact maybe this is where we should maybe
+     * start to be clever and store the original object and then extract any aliases into a separate member that
+     * optionally replaces the developername on serialisation?)
+     *
+     * @param connection the Sql2o database connection either a standard connection or a transaction
+     * @param configuration the configuration object for the database
+     * @param object the object that has a primary key set to update (with the updates to do)
+     * @return the updated MObject
+     * @exception Exception if can't find metadata or if update fails itself
+     */
+    private MObject doUpdate (Connection connection, ServiceConfiguration configuration, MObject object) throws Exception {
+        // get metadata
+        TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration, object.getDeveloperName());
+        // convert any (external) aliases to internal column names
+        object = aliasService.getMObjectWithoutAliases(object, tableMetadata);
+        // run the actual update
+        object = this.dataManager.update(connection, configuration, tableMetadata, object);
+        // return the object with the internal column names updated to any external aliases if they exist
+        return this.aliasService.getMObjectWithAliases(object, tableMetadata);
     }
 }
