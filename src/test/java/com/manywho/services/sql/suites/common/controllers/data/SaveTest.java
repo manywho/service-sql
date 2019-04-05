@@ -134,6 +134,57 @@ public class SaveTest extends ServiceFunctionalTest {
     }
 
     @Test
+    public void updatePrimaryKeyTest () throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
+
+        createTestTable();
+
+        insertToTestTable(1, "test");
+
+        // update testtable set id = 2, data = "two" where id = 1;
+        DefaultApiRequest.saveDataRequestAndAssertion("/data",
+                "suites/common/data/save/update/update-primary-key-request.json",
+                configurationParameters(),
+                "suites/common/data/save/update/update-primary-key-response.json",
+                dispatcher
+        );
+
+        // table is now only one entry and id 2 data "two"
+        insertToTestTable(1, "one");
+        insertToTestTable(3, "three");
+
+        // update testtable set id = 1, data = "should fail" where id = 2;
+        // make sure this fails, the database should throw duplicate primary key error and doesn't actually do:
+        // update testtable set id = 1, data = "should fail" where id = 1;
+        // as this will break the wrong data!!!
+
+        try {
+            DefaultApiRequest.saveDataRequestAndAssertion("/data",
+                    // ::TODO:: check this file!!
+                    "suites/common/data/save/update/update-primary-key-request.json",
+                    configurationParameters(),
+                    // ::TODO:: check this file!!
+                    "suites/common/data/save/update/update-primary-key-response.json",
+                    dispatcher
+            );
+        } catch (Exception ex) {
+            // ::TODO:: check this exception!
+            if (ex.getCause() instanceof RecordNotFoundException) {
+                assertIndexEqualsTestTable(1, "one");
+                assertIndexEqualsTestTable(2, "two");
+                assertIndexEqualsTestTable(3, "three");
+                return;
+            }
+            ex.printStackTrace();
+            Assert.fail("Unexpected exception: " +ex);
+            throw ex;
+        }
+        Assert.fail("Expected RecordNotFoundException");
+
+
+    }
+
+    @Test
     public void createMultipleTest() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
