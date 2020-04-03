@@ -130,9 +130,8 @@ public class Database implements RawDatabase<ServiceConfiguration> {
         try (Connection connection = sql2o.open()) {
             TableMetadata tableMetadata = metadataManager.getMetadataTable(connection, configuration, objectDataType.getDeveloperName());
             List<MObject> mObjects = this.dataManager.loadBySearch(sql2o, configuration, tableMetadata, objectDataType, filter);
+
             return this.aliasService.getMObjectsWithAlias(mObjects, tableMetadata);
-
-
         } catch (Exception e) {
             try {
                 LOGGER.error("findAll filter: " + objectMapper.writeValueAsString(filter), e);

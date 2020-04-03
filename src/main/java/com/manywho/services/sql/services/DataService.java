@@ -16,6 +16,7 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import javax.inject.Inject;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -59,9 +60,17 @@ public class DataService {
         }
     }
 
-    public List<MObject> fetchBySearch(TableMetadata tableMetadata, Sql2o sql2o, String sqlSearch) throws SQLException {
+    public List<MObject> fetchBySearch(TableMetadata tableMetadata, Sql2o sql2o, String sqlSearch, List<Object> placeHolderParameters) throws SQLException {
         try (Connection con = sql2o.open()) {
-            Query query = con.createQuery(sqlSearch).setCaseSensitive(true);
+            PreparedStatement preparedStatement = con.getJdbcConnection().prepareStatement(sqlSearch);
+
+            int indexQuestionMark =1;
+            for (Object placeHolderParameter: placeHolderParameters) {
+                preparedStatement.setObject(indexQuestionMark, placeHolderParameter);
+                indexQuestionMark++;
+            }
+
+            Query query = con.createQuery(preparedStatement.toString()).setCaseSensitive(true);
 
             return mObjectFactory.createFromTable(query.executeAndFetchTable(), tableMetadata);
         } catch (RuntimeException ex) {

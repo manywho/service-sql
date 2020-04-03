@@ -1,5 +1,6 @@
 package com.manywho.services.sql.managers;
 
+import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
 import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataType;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,11 +43,12 @@ public class DataManager {
                                       ObjectDataType objectDataType, ListFilter filters) throws Exception {
 
         String queryString = "";
-
+        List<Object> placeHolderParameters = new ArrayList<>();
+        QueryPreparer preparer = new QueryPreparer();
         try {
-            queryString = queryStrService.getSqlFromFilter(configuration, objectDataType, filters, tableMetadata);
+            queryString = queryStrService.getSqlFromFilter(configuration, objectDataType, filters, tableMetadata, preparer, placeHolderParameters);
 
-            return dataService.fetchBySearch(tableMetadata, sql2o, queryString);
+            return dataService.fetchBySearch(tableMetadata, sql2o, queryString, placeHolderParameters);
         } catch (Exception ex) {
             LOGGER.error("query: " + queryString, ex);
             throw ex;
