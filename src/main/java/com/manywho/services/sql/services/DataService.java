@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
+import org.sql2o.data.Table;
 
 import javax.inject.Inject;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -60,19 +60,42 @@ public class DataService {
         }
     }
 
-    public List<MObject> fetchBySearch(TableMetadata tableMetadata, Sql2o sql2o, String sqlSearch, List<Object> placeHolderParameters) throws SQLException {
-        try (Connection con = sql2o.open()) {
-            PreparedStatement preparedStatement = con.getJdbcConnection().prepareStatement(sqlSearch);
+    /**
+     * This method create a query object from library Sql2o with the parameters populated
+     *
+     * we have used com.healthmarketscience.sqlbuilder to build the "where" part, each parameter has been marked as "?",
+     * but we need to use a different format when using sql2o to execute the query, the format is naming the parameters
+     * like this ":paramname"
+     *
+     */
+    public Query createQuery(Connection connection, String sqlSearch, List<Object> placeHolderParameters) {
+        int paramIndex = 1;
+        while (paramIndex <= placeHolderParameters.size()) {
+            String paramName = ":param" + paramIndex;
+            sqlSearch = sqlSearch.replaceFirst("\\?", paramName);
+            paramIndex++;
+        }
 
-            int indexQuestionMark =1;
-            for (Object placeHolderParameter: placeHolderParameters) {
-                preparedStatement.setObject(indexQuestionMark, placeHolderParameter);
-                indexQuestionMark++;
-            }
+        Query query = connection.createQuery(sqlSearch);
+        paramIndex = 1;
+        for (Object parameter: placeHolderParameters) {
+            String paramName = "param" + paramIndex;
+            query.addParameter(paramName, parameter);
+            paramIndex++;
+        }
 
-            Query query = con.createQuery(preparedStatement.toString()).setCaseSensitive(true);
+        query.setCaseSensitive(true);
 
-            return mObjectFactory.createFromTable(query.executeAndFetchTable(), tableMetadata);
+        return query;
+    }
+
+    public List<MObject> fetchBySearch(TableMetadata tableMetadata, Sql2o sql2o, String sqlSearch, List<Object> placeHolderParameters) {
+        try (Connection con = sql2o.beginTransaction()) {
+            Query query = createQuery(con, sqlSearch, placeHolderParameters);
+            Table table = query.executeAndFetchTable();
+            con.commit();
+
+            return mObjectFactory.createFromTable(table, tableMetadata);
         } catch (RuntimeException ex) {
             LOGGER.error("query: " + sqlSearch, ex);
             throw ex;

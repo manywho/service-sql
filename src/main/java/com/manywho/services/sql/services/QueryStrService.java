@@ -93,8 +93,11 @@ public class QueryStrService {
         queryFilterConditions.addSearch(selectQuery, preparer, filter.getSearch(), objectDataType.getProperties(),
                 tableMetadata.getColumnsDatabaseType(), configuration.getDatabaseType(), placeHolderParameters);
 
-        queryFilterConditions.addWhere(selectQuery, preparer, filter.getWhere(), filter.getComparisonType(), configuration.getDatabaseType(), tableMetadata, placeHolderParameters);
+        queryFilterConditions.addWhere(selectQuery, preparer, filter.getWhere(), filter.getComparisonType(),
+                configuration.getDatabaseType(), tableMetadata, placeHolderParameters);
+
         queryFilterConditions.addOffset(selectQuery, configuration.getDatabaseType(), filter.getOffset(), filter.getLimit());
+
         queryFilterConditions.addOrderBy(selectQuery, filter.getOrderByPropertyDeveloperName(),
                 filter.getOrderByDirectionType(), tableMetadata, configuration.getDatabaseType());
 

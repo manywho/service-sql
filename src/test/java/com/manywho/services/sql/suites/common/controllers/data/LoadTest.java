@@ -123,7 +123,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataBySearchFilterWithEscape() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
@@ -144,7 +143,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByAndFilterWithEscape() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
