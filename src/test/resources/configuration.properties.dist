@@ -1,10 +1,10 @@
 sqlserver_port = 1433
 sqlserver_databaseType = sqlserver
-sqlserver_databaseName = service-sql
-sqlserver_schema = servicesql
+sqlserver_databaseName = test
+sqlserver_schema = dbo
 sqlserver_host = localhost
-sqlserver_userName = root
-sqlserver_password = pass
+sqlserver_userName = sa
+sqlserver_password = YourStrong!Passw0rd
 
 mysql_port = 3306
 mysql_databaseType = mysql
