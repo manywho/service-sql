@@ -10,8 +10,8 @@ public class DbTestConfigurationProperties {
         try {
             properties = new Properties();
 
-            if(getClass().getClassLoader().getResourceAsStream("configuration.properties") != null) {
-                properties.load(getClass().getClassLoader().getResourceAsStream("configuration.properties"));
+            if(getClass().getClassLoader().getResourceAsStream("configuration.properties.dist") != null) {
+                properties.load(getClass().getClassLoader().getResourceAsStream("configuration.properties.dist"));
             } else {
                 usingPropertiesFile = false;
             }
