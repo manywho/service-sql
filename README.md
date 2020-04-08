@@ -42,6 +42,9 @@ mvn clean test -Dtest=PostgreSqlTestSuite
 mvn clean test -Dtest=SqlServerTestSuite
 ````
 
+To set up any of the supported database in your local environment you can create them using docker as shows in .travis.yml
+
+
 #### Running
 
 The service is a Jersey JAX-RS application, that by default is run under the Grizzly2 server on port 8080 (if you use 
