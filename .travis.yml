@@ -11,7 +11,7 @@ before_install:
 before_script:
   - sudo docker run --name=sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
   - sudo docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd' -Q 'create database test'
-  - sudo docker run -d --name mysqlserver -p 3307:3306 -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=service-sql mysql:8
+  - sudo docker run -d --name mysqlserver -p 3307:3306 -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=service-sql mysql:5.7
   - sudo docker run --name postgresserver -p 5433:5432 -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=service-sql -d postgres:9.6
 script:
   - mvn clean package -DskipTests=true
