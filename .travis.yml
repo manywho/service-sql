@@ -6,16 +6,13 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
-services:
-  - postgresql
-  - mysql
 before_install:
     - export TZ=Europe/London
 before_script:
-  - psql -c 'create database test;' -U postgres
-  - mysql -e 'create database test;'
   - sudo docker run --name=sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
   - sudo docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd' -Q 'create database test'
+  - sudo docker run -d --name mysqlserver -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=service-sql mysql:8
+  - sudo docker run --name postgresserver -p 5432:5432 -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=service-sql -d postgres:9.6
 script:
   - mvn clean package -DskipTests=true
   - mvn test -Dtest=UnitTestSuite
