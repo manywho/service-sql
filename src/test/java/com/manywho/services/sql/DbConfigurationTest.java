@@ -1,7 +1,5 @@
 package com.manywho.services.sql;
 
-import com.manywho.services.sql.utilities.DbTestConfigurationProperties;
-
 public class DbConfigurationTest {
     static public boolean initialized = false;
     static public String portForTest;
@@ -15,32 +13,29 @@ public class DbConfigurationTest {
 
     static public void setPorperties(String databaseType) {
         DbConfigurationTest.initialized = true;
-        DbTestConfigurationProperties serviceConfigurationProperties = new DbTestConfigurationProperties();
 
-        DbConfigurationTest.portForTest = serviceConfigurationProperties.get(databaseType + "_port");
-        DbConfigurationTest.databaseTypeForTest = serviceConfigurationProperties.get(databaseType + "_databaseType");
-        DbConfigurationTest.schemaForTest = serviceConfigurationProperties.get(databaseType + "_schema");
-        DbConfigurationTest.hostForTest = serviceConfigurationProperties.get(databaseType + "_host");
-        DbConfigurationTest.databaseNameForTest = serviceConfigurationProperties.get(databaseType + "_databaseName");
+        DbConfigurationTest.portForTest = System.getenv(databaseType + "_port");
+        DbConfigurationTest.databaseTypeForTest = System.getenv(databaseType + "_databaseType");
+        DbConfigurationTest.schemaForTest = System.getenv(databaseType + "_schema");
+        DbConfigurationTest.hostForTest = System.getenv(databaseType + "_host");
+        DbConfigurationTest.databaseNameForTest = System.getenv(databaseType + "_databaseName");
 
-        DbConfigurationTest.userName = serviceConfigurationProperties.get(databaseType + "_userName");
-        DbConfigurationTest.password = serviceConfigurationProperties.get(databaseType + "_password");
+        DbConfigurationTest.userName = System.getenv(databaseType + "_userName");
+        DbConfigurationTest.password = System.getenv(databaseType + "_password");
     }
 
     static public void setPropertiesIfNotInitialized(String databaseType) {
         if(!DbConfigurationTest.initialized) {
             initialized = true;
 
-            DbTestConfigurationProperties serviceConfigurationProperties = new DbTestConfigurationProperties();
+            DbConfigurationTest.portForTest = System.getenv(databaseType + "_port");
+            DbConfigurationTest.databaseTypeForTest = System.getenv(databaseType + "_databaseType");
+            DbConfigurationTest.schemaForTest = System.getenv(databaseType + "_schema");
+            DbConfigurationTest.hostForTest = System.getenv(databaseType + "_host");
+            DbConfigurationTest.databaseNameForTest = System.getenv(databaseType + "_databaseName");
 
-            DbConfigurationTest.portForTest = serviceConfigurationProperties.get(databaseType + "_port");
-            DbConfigurationTest.databaseTypeForTest = serviceConfigurationProperties.get(databaseType + "_databaseType");
-            DbConfigurationTest.schemaForTest = serviceConfigurationProperties.get(databaseType + "_schema");
-            DbConfigurationTest.hostForTest = serviceConfigurationProperties.get(databaseType + "_host");
-            DbConfigurationTest.databaseNameForTest = serviceConfigurationProperties.get(databaseType + "_databaseName");
-
-            DbConfigurationTest.userName = serviceConfigurationProperties.get(databaseType + "_userName");
-            DbConfigurationTest.password = serviceConfigurationProperties.get(databaseType + "_password");
+            DbConfigurationTest.userName = System.getenv(databaseType + "_userName");
+            DbConfigurationTest.password = System.getenv(databaseType + "_password");
         }
     }
 }

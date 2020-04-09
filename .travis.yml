@@ -8,6 +8,28 @@ addons:
       - oracle-java8-installer
 before_install:
     - export TZ=Europe/London
+env:
+  - sqlserver_port=1433
+  - sqlserver_databaseType=sqlserver
+  - sqlserver_databaseName=test
+  - sqlserver_schema=dbo
+  - sqlserver_host=localhost
+  - sqlserver_userName=sa
+  - sqlserver_password=YourStrong!Passw0rd
+  - mysql_port=3306
+  - mysql_databaseType=mysql
+  - mysql_databaseName=service-sql
+  - mysql_schema=service-sql
+  - mysql_host=localhost
+  - mysql_userName=root
+  - mysql_password=pass
+  - postgresql_port=5432
+  - postgresql_databaseType=postgresql
+  - postgresql_databaseName=service-sql
+  - postgresql_schema=servicesql
+  - postgresql_host=localhost
+  - postgresql_userName=root
+  - postgresql_password=pass
 before_script:
   - sudo docker run --name=sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
   - sudo docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd' -Q 'create database test'

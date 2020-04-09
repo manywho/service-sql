@@ -25,9 +25,6 @@ $ mvn clean package -DskipTests=true
 
 #### Testing
 
-Copy the file src\test\resources\configuration.properties.dist and paste it with name src\test\resources\configuration.properties
-Your configuration of the database for test is the one that you have in configuration.properties
-
 Example of running all the suites with all the databases (you should have all the databases configured and running before execute this command)
 
 ````
@@ -43,6 +40,7 @@ mvn clean test -Dtest=SqlServerTestSuite
 ````
 
 To set up any of the supported database in your local environment you can create them using docker as shows in .travis.yml
+You will also need the environment variables as it is described in .travis.yml
 
 
 #### Running
