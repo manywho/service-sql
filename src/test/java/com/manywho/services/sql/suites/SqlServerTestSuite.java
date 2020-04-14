@@ -4,10 +4,11 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.suites.common.controllers.data.LoadTest;
 import com.manywho.services.sql.suites.common.controllers.data.MultipleKeyTest;
 import com.manywho.services.sql.suites.common.controllers.data.SaveTest;
-import com.manywho.services.sql.suites.common.controllers.describe.DescribeTest;
+
 import com.manywho.services.sql.suites.sqlserver.data.AutoIncrementTest;
 import com.manywho.services.sql.suites.sqlserver.data.DateTimeTest;
 import com.manywho.services.sql.suites.sqlserver.data.CapitalLetterTest;
+import com.manywho.services.sql.suites.sqlserver.describe.DescribeTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,8 +19,8 @@ import org.junit.runners.Suite;
         LoadTest.class,
         MultipleKeyTest.class,
         SaveTest.class,
-        DescribeTest.class,
         //sql server
+        DescribeTest.class,
         DateTimeTest.class,
         CapitalLetterTest.class,
         AutoIncrementTest.class

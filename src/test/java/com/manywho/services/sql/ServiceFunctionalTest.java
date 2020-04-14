@@ -94,6 +94,22 @@ public abstract class ServiceFunctionalTest {
         }
     }
 
+    protected void deleteViewIfExist(String tableName, Connection connection){
+        try {
+            String sql;
+            switch (DbConfigurationTest.databaseTypeForTest) {
+                case "sqlserver":
+                    sql = "DROP VIEW "+ escapeTableName(tableName);
+                    break;
+                default:
+                    sql = "DROP VIEW IF EXISTS "+ escapeTableName(tableName);
+            }
+
+            connection.createQuery(sql).executeUpdate();
+        } catch (Exception ex){
+        }
+    }
+
     public String escapeTableName(String tableName) {
         String format = "%s.\"%s\"";
 

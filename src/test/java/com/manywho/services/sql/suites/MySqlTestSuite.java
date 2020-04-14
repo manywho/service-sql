@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
         // mysql
         CapitalLetterTest.class,
         AutoIncrementTest.class,
+        com.manywho.services.sql.suites.mysql.describe.DescribeTest.class,
         com.manywho.services.sql.suites.mysql.data.SaveTest.class
 })
 public class MySqlTestSuite {

@@ -3,6 +3,7 @@ package com.manywho.services.sql.suites.common.controllers.data;
 import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
+import org.junit.After;
 import org.junit.Test;
 import org.sql2o.Connection;
 
@@ -38,6 +39,14 @@ public class DeleteTest extends ServiceFunctionalTest {
             String sql = "SELECT count(cityname) From " + escapeTableName("city")+ " WHERE cityname = 'Montevideo' and countryname ='Uruguay';";
             int found = connection.createQuery(sql).executeScalar(Integer.class);
             assertEquals(0, found);
+        }
+    }
+
+    @After
+    public void cleanDatabaseAfterEachTest() {
+        try (Connection connection = getSql2o().open()) {
+            deleteTableIfExist("city", connection);
+        } catch (ClassNotFoundException e) {
         }
     }
 }

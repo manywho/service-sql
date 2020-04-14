@@ -44,7 +44,7 @@ public class MultipleKeyTest extends ServiceFunctionalTest {
 
     @Test
     public void testCreate() throws Exception {
-        
+
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/multiple-primary-key/create/create-request.json",
                 configurationParameters(),

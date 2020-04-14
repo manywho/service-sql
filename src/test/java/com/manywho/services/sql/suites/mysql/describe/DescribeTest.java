@@ -57,12 +57,11 @@ public class DescribeTest extends ServiceFunctionalTest {
     @After
     public void cleanDatabaseAfterEachTest() {
         try (Connection connection = getSql2o().open()) {
-            String sql = "DROP VIEW IF EXISTS " + escapeTableName("emptyview") + ";";
-            connection.createQuery(sql).executeUpdate();
+            deleteViewIfExist("emptyview", connection);
             deleteTableIfExist("notemptytable", connection);
-            String sql2 = "DROP VIEW IF EXISTS " + escapeTableName("notemptyview") + ";";
-            connection.createQuery(sql2).executeUpdate();
+            deleteViewIfExist("notemptyview", connection);
             deleteTableIfExist("country", connection);
+            deleteTableIfExist("deletetable", connection);
         } catch (ClassNotFoundException e) {
         }
     }

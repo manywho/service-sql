@@ -116,8 +116,8 @@
           {
             "id": null,
             "developerName": "country",
-            "developerSummary": "The binding for country2",
-            "databaseTableName": "country2",
+            "developerSummary": "The binding for country",
+            "databaseTableName": "country",
             "serviceElementId": null,
             "propertyBindings": [
               {

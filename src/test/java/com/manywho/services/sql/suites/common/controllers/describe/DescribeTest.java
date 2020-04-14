@@ -106,15 +106,7 @@ public class DescribeTest extends ServiceFunctionalTest {
     public void cleanDatabaseAfterEachTest() {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
-        } catch (ClassNotFoundException e) {
-        }
-
-        try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country2", connection);
-        } catch (ClassNotFoundException e) {
-        }
-
-        try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("timetest", connection);
         } catch (ClassNotFoundException e) {
         }
