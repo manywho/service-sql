@@ -72,10 +72,9 @@ public class CapitalLetterTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("Country", connection);
-        } catch (ClassNotFoundException e) {
         }
     }
 }

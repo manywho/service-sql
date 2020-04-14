@@ -4,12 +4,14 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
 public class SaveTest extends ServiceFunctionalTest {
-    @Test
-    public void testCreate() throws Exception {
+
+    @Before
+    public void createTable() throws ClassNotFoundException {
         DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
 
         try (Connection connection = getSql2o().open()) {
@@ -23,6 +25,10 @@ public class SaveTest extends ServiceFunctionalTest {
                     ");";
             connection.createQuery(sql).executeUpdate();
         }
+    }
+
+    @Test
+    public void testCreate() throws Exception {
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/mysql/create/create-request.json",
@@ -33,11 +39,9 @@ public class SaveTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country1", connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

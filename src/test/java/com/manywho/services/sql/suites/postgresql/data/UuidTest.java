@@ -16,10 +16,6 @@ public class UuidTest extends ServiceFunctionalTest {
     @Before
     public void setupDatabase() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
-    }
-
-    @Test
-    public void testLoad() throws ClassNotFoundException, JSONException, IOException, URISyntaxException {
         try (Connection connection = getSql2o().open()) {
             String sqlCreate = "CREATE TABLE " + escapeTableName("uuidexample") +
                     "(" +
@@ -27,7 +23,12 @@ public class UuidTest extends ServiceFunctionalTest {
                     "payload character(300)" +
                     ");";
             connection.createQuery(sqlCreate).executeUpdate();
+        }
+    }
 
+    @Test
+    public void testLoad() throws ClassNotFoundException, JSONException, IOException, URISyntaxException {
+        try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("uuidexample") + "(uuidkey, payload) VALUES " +
                     "('155e3620-42bb-11e6-beb8-9e71128cae77', 'payload example');";
 
@@ -44,13 +45,6 @@ public class UuidTest extends ServiceFunctionalTest {
     @Test
     public void testUpdate() throws ClassNotFoundException, JSONException, IOException, URISyntaxException {
         try (Connection connection = getSql2o().open()) {
-            String sqlCreate = "CREATE TABLE " + escapeTableName("uuidexample") +
-                    "(" +
-                    "uuidkey uuid PRIMARY KEY," +
-                    "payload character(300)" +
-                    ");";
-            connection.createQuery(sqlCreate).executeUpdate();
-
             String sql = "INSERT INTO " + escapeTableName("uuidexample") + "(uuidkey, payload) VALUES " +
                     "('155e3620-42bb-11e6-beb8-9e71128cae77', 'payload example');";
 
@@ -67,14 +61,6 @@ public class UuidTest extends ServiceFunctionalTest {
 
     @Test
     public void testCreate() throws ClassNotFoundException, JSONException, IOException, URISyntaxException {
-        try (Connection connection = getSql2o().open()) {
-            String sqlCreate = "CREATE TABLE " + escapeTableName("uuidexample") +
-                    "(" +
-                    "uuidkey uuid PRIMARY KEY," +
-                    "payload character(300)" +
-                    ");";
-            connection.createQuery(sqlCreate).executeUpdate();
-        }
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/postgresql/uuid/save/create/create-request.json",
@@ -85,11 +71,9 @@ public class UuidTest extends ServiceFunctionalTest {
 
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("uuidexample", connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

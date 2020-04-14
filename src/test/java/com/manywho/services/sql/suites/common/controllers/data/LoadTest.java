@@ -4,12 +4,14 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
 public class LoadTest extends ServiceFunctionalTest {
 
-    private void setupTableCountryTable() throws Exception {
+    @Before
+    public void setupTableCountryTable() throws Exception {
         DbConfigurationTest.setPropertiesIfNotInitialized("sqlserver");
         try (Connection connection = getSql2o().open()) {
             String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "("+
@@ -25,7 +27,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadIsEmptyData() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', null);";
@@ -45,7 +46,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadIsNotEmptyData() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', 'Uruguay description');";
@@ -66,7 +66,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByExternalId() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', 'It is a nice country');";
@@ -83,7 +82,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByEqualAndLikeFilter() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO "+ escapeTableName("country")+"(id, name, description) VALUES " +
@@ -103,7 +101,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByEqualOrLikeFilter() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
@@ -123,7 +120,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataBySearchFilterWithEscape() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
@@ -143,7 +139,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByAndFilterWithEscape() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
@@ -163,7 +158,6 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByFilterWithOffsetAndLimit() throws Exception {
-        setupTableCountryTable();
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
@@ -184,10 +178,9 @@ public class LoadTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
-        } catch (ClassNotFoundException e) {
         }
     }
 }

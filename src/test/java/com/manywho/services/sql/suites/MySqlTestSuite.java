@@ -8,6 +8,7 @@ import com.manywho.services.sql.suites.common.controllers.data.SaveTest;
 import com.manywho.services.sql.suites.common.controllers.describe.DescribeTest;
 import com.manywho.services.sql.suites.mysql.data.AutoIncrementTest;
 import com.manywho.services.sql.suites.mysql.data.CapitalLetterTest;
+import com.manywho.services.sql.suites.mysql.describe.DescribeViewTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -24,7 +25,8 @@ import org.junit.runners.Suite;
         CapitalLetterTest.class,
         AutoIncrementTest.class,
         com.manywho.services.sql.suites.mysql.describe.DescribeTest.class,
-        com.manywho.services.sql.suites.mysql.data.SaveTest.class
+        com.manywho.services.sql.suites.mysql.data.SaveTest.class,
+        DescribeViewTest.class
 })
 public class MySqlTestSuite {
     @BeforeClass
