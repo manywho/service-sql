@@ -11,6 +11,7 @@ import com.manywho.services.sql.services.filter.QueryFilterConditions;
 import com.manywho.services.sql.utilities.ScapeForTablesUtil;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Set;
 
 public class QueryStrService {
@@ -80,7 +81,7 @@ public class QueryStrService {
         return  insertQuery.validate().toString();
     }
 
-    public String getSqlFromFilter(ServiceConfiguration configuration, ObjectDataType objectDataType, ListFilter filter, TableMetadata tableMetadata) {
+    public String getSqlFromFilter(ServiceConfiguration configuration, ObjectDataType objectDataType, ListFilter filter, TableMetadata tableMetadata, QueryPreparer preparer, List<Object> placeHolderParameters) {
 
         SelectQuery selectQuery = new SelectQuery().addAllColumns()
                 .addCustomFromTable(scapeForTablesUtil.scapeTableName(configuration.getDatabaseType(),
@@ -89,9 +90,14 @@ public class QueryStrService {
         aliasService.setFiltersOriginalNames(tableMetadata, filter);
         objectDataType.setProperties(aliasService.setPropertiesOriginalName(tableMetadata, objectDataType.getProperties()));
 
-        queryFilterConditions.addSearch(selectQuery, filter.getSearch(), objectDataType.getProperties(), tableMetadata.getColumnsDatabaseType(), configuration.getDatabaseType());
-        queryFilterConditions.addWhere(selectQuery, filter.getWhere(), filter.getComparisonType(), configuration.getDatabaseType(), tableMetadata);
+        queryFilterConditions.addSearch(selectQuery, preparer, filter.getSearch(), objectDataType.getProperties(),
+                tableMetadata.getColumnsDatabaseType(), configuration.getDatabaseType(), placeHolderParameters);
+
+        queryFilterConditions.addWhere(selectQuery, preparer, filter.getWhere(), filter.getComparisonType(),
+                configuration.getDatabaseType(), tableMetadata, placeHolderParameters);
+
         queryFilterConditions.addOffset(selectQuery, configuration.getDatabaseType(), filter.getOffset(), filter.getLimit());
+
         queryFilterConditions.addOrderBy(selectQuery, filter.getOrderByPropertyDeveloperName(),
                 filter.getOrderByDirectionType(), tableMetadata, configuration.getDatabaseType());
 

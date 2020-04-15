@@ -5,6 +5,7 @@ import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.custom.mysql.MysLimitClause;
 import com.healthmarketscience.sqlbuilder.custom.postgresql.PgLimitClause;
 import com.healthmarketscience.sqlbuilder.custom.postgresql.PgOffsetClause;
+
 import com.manywho.sdk.api.ComparisonType;
 import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
@@ -24,7 +25,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class QueryFilterConditions {
-    public void addSearch(SelectQuery selectQuery, String search, List<ObjectDataTypeProperty> listProperties, HashMap<String, String> columns, DatabaseType databaseType) {
+    public void addSearch(SelectQuery selectQuery, QueryPreparer preparer, String search, List<ObjectDataTypeProperty> listProperties,
+                          HashMap<String, String> columns, DatabaseType databaseType, List<Object> placeHolderParameters) {
+
         if (Strings.isNullOrEmpty(search)) {
             return;
         }
@@ -40,30 +43,34 @@ public class QueryFilterConditions {
                         Map.Entry::getValue
                 ));
 
-        String searchTerm = "%" + search + "%";
-
+        // %search%
+        String searchTerm = String.format("%%%s%%", search);
         ComboCondition searchCondition = new ComboCondition(ComboCondition.Op.OR);
+        SqlObject placeHolder = preparer.getNewMultiPlaceHolder();
 
         for (ObjectDataTypeProperty property : listProperties) {
             if (stringishColumns.containsKey(property.getDeveloperName())) {
                 searchCondition.addCondition(BinaryCondition.like(
                         new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, property.getDeveloperName())),
-                        searchTerm
+                        placeHolder
                 ));
+                placeHolderParameters.add(searchTerm);
             }
         }
 
         selectQuery.addCondition(searchCondition);
     }
 
-    public void addWhere(SelectQuery selectQuery, List<ListFilterWhere> whereList, ComparisonType comparisonType, DatabaseType databaseType, TableMetadata tableMetadata) {
+    public void addWhere(SelectQuery selectQuery, QueryPreparer preparer, List<ListFilterWhere> whereList, ComparisonType comparisonType,
+                         DatabaseType databaseType, TableMetadata tableMetadata, List<Object> placeHolderParameters) {
+
         ArrayList<Condition> conditions = new ArrayList<>();
         if(whereList == null) return;
 
         String comparisonTypeLocal = "";
 
         for (ListFilterWhere filterWhere: whereList) {
-            conditions.add(getConditionFromFilterElement(filterWhere, databaseType, tableMetadata));
+            conditions.add(getConditionFromFilterElement(preparer, filterWhere, databaseType, tableMetadata, placeHolderParameters));
         }
 
         if(comparisonType!=null) {
@@ -102,28 +109,40 @@ public class QueryFilterConditions {
 
     }
 
-    private Condition getConditionFromFilterElement(ListFilterWhere filterWhere, DatabaseType databaseType, TableMetadata tableMetadata) {
+    private Condition getConditionFromFilterElement(QueryPreparer preparer, ListFilterWhere filterWhere, DatabaseType databaseType,
+                                                    TableMetadata tableMetadata, List<Object> placeHolderParameters) {
+
         Object object = prepareObjectForMysql(databaseType, tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
+        SqlObject placeHolder = preparer.getNewMultiPlaceHolder();
 
         switch (filterWhere.getCriteriaType()) {
             case Equal:
-               return BinaryCondition.equalTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object);
+                placeHolderParameters.add(object);
+               return BinaryCondition.equalTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case NotEqual:
-               return BinaryCondition.notEqualTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object);
+                placeHolderParameters.add(object);
+               return BinaryCondition.notEqualTo(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case GreaterThan:
-               return BinaryCondition.greaterThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object, false);
+                placeHolderParameters.add(object);
+               return BinaryCondition.greaterThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, false);
             case GreaterThanOrEqual:
-               return BinaryCondition.greaterThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object, true);
+                placeHolderParameters.add(object);
+               return BinaryCondition.greaterThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, true);
             case LessThan:
-               return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object, false);
+                placeHolderParameters.add(object);
+               return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, false);
             case LessThanOrEqual:
-               return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), object, true);
+                placeHolderParameters.add(object);
+               return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, true);
             case Contains:
-               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), "%" + filterWhere.getContentValue() + "%");
+                placeHolderParameters.add("%" + filterWhere.getContentValue() + "%");
+               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case StartsWith:
-               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), filterWhere.getContentValue() + "%");
+                placeHolderParameters.add(filterWhere.getContentValue() + "%");
+               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case EndsWith:
-               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), "%" + filterWhere.getContentValue());
+                placeHolderParameters.add("%" + filterWhere.getContentValue());
+               return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case IsEmpty:
                 if (Strings.isNullOrEmpty(filterWhere.getContentValue()) == false && filterWhere.getContentValue().toLowerCase().equals("true")) {
                     return UnaryCondition.isNull(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())));

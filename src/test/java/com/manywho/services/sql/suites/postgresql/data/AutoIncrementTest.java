@@ -4,13 +4,14 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
 public class AutoIncrementTest extends ServiceFunctionalTest {
 
-    @Test
-    public void testCreateDataWithAutoIncrement() throws Exception {
+    @Before
+    public void createTable() throws ClassNotFoundException {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
 
         try (Connection connection = getSql2o().open()) {
@@ -22,6 +23,10 @@ public class AutoIncrementTest extends ServiceFunctionalTest {
                     ");";
             connection.createQuery(sql).executeUpdate();
         }
+    }
+
+    @Test
+    public void testCreateDataWithAutoIncrement() throws Exception {
 
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/postgresql/autoincrement/create-request.json",
@@ -33,16 +38,6 @@ public class AutoIncrementTest extends ServiceFunctionalTest {
 
     @Test
     public void testUpdateAutoincrement() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
-        try (Connection connection = getSql2o().open()) {
-            String sql = "CREATE TABLE " + escapeTableName("country") + "(" +
-                    "name character varying(255)," +
-                    "description character varying(1024), " +
-                    "id SERIAL NOT NULL," +
-                    "CONSTRAINT country_id_pk PRIMARY KEY (id)" +
-                    ");";
-            connection.createQuery(sql).executeUpdate();
-        }
 
         try (Connection connection = getSql2o().open()) {
             String sql = "INSERT INTO " + escapeTableName("country") + "( name, description) VALUES ( 'Uruguay', 'It is a nice country');";
@@ -58,10 +53,9 @@ public class AutoIncrementTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
-        } catch (ClassNotFoundException e) {
         }
     }
 }

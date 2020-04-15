@@ -4,15 +4,16 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class DeleteTest extends ServiceFunctionalTest {
-    @Test
-    public void testDeleteDataByExternalIdWithAliases() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+
+    @Before
+    public void createTable() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             String sqlCreateTable = "CREATE TABLE " + escapeTableName("city") +
                     "(" +
@@ -22,7 +23,13 @@ public class DeleteTest extends ServiceFunctionalTest {
                     "CONSTRAINT city_pk PRIMARY KEY (cityname, countryname)" +
                     ");";
             connection.createQuery(sqlCreateTable).executeUpdate();
+        }
+    }
 
+    @Test
+    public void testDeleteDataByExternalIdWithAliases() throws Exception {
+        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
+        try (Connection connection = getSql2o().open()) {
             String aliasCityName = "COMMENT ON COLUMN " + escapeTableName("city") + ".cityname IS '{{ManyWhoName:City Name}}';";
             String aliasCountryName = "COMMENT ON COLUMN " + escapeTableName("city") + ".countryname IS '{{ManyWhoName:Country Name}}';";
             connection.createQuery(aliasCityName).executeUpdate();
@@ -47,11 +54,9 @@ public class DeleteTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("city", connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

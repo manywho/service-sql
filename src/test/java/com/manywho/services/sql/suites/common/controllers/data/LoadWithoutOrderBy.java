@@ -60,11 +60,9 @@ public class LoadWithoutOrderBy extends ServiceFunctionalTest {
 
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("city", connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

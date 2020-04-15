@@ -78,20 +78,30 @@ public abstract class ServiceFunctionalTest {
         return  replacements;
     }
 
-    protected void deleteTableIfExist(String tableName, Connection connection){
-        try {
-            String sql;
-            switch (DbConfigurationTest.databaseTypeForTest) {
-                case "sqlserver":
-                    sql = "DROP TABLE "+ escapeTableName(tableName);
-                    break;
-                default:
-                    sql = "DROP TABLE IF EXISTS "+ escapeTableName(tableName);
-            }
-
-            connection.createQuery(sql).executeUpdate();
-        } catch (Exception ex){
+    protected void deleteTableIfExist(String tableName, Connection connection) {
+        String sql;
+        switch (DbConfigurationTest.databaseTypeForTest) {
+            case "sqlserver":
+                sql = "DROP TABLE "+ escapeTableName(tableName);
+                break;
+            default:
+                sql = "DROP TABLE IF EXISTS "+ escapeTableName(tableName);
         }
+
+        connection.createQuery(sql).executeUpdate();
+    }
+
+    protected void deleteViewIfExist(String viewName, Connection connection){
+        String sql;
+        switch (DbConfigurationTest.databaseTypeForTest) {
+            case "sqlserver":
+                sql = "DROP VIEW "+ escapeTableName(viewName);
+                break;
+            default:
+                sql = "DROP VIEW IF EXISTS "+ escapeTableName(viewName);
+        }
+
+        connection.createQuery(sql).executeUpdate();
     }
 
     public String escapeTableName(String tableName) {

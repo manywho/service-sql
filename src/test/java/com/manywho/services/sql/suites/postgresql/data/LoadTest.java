@@ -4,23 +4,29 @@ import com.manywho.services.sql.DbConfigurationTest;
 import com.manywho.services.sql.ServiceFunctionalTest;
 import com.manywho.services.sql.utilities.DefaultApiRequest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
 public class LoadTest extends ServiceFunctionalTest {
-    @Test
-    public void testLoadDataByEqualOrLikeFilterWithAlias() throws Exception {
+
+    @Before
+    public void createTable() throws ClassNotFoundException {
         DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         try (Connection connection = getSql2o().open()) {
-            String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "("+
-                    "id integer NOT NULL,"+
+            String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "(" +
+                    "id integer NOT NULL," +
                     "name character varying(255)," +
                     "description character varying(1024)," +
                     "CONSTRAINT country_id_pk PRIMARY KEY (id)" +
                     ");";
 
             connection.createQuery(sqlCreateTable).executeUpdate();
-
+        }
+    }
+    @Test
+    public void testLoadDataByEqualOrLikeFilterWithAlias() throws Exception {
+        try (Connection connection = getSql2o().open()) {
             String aliasName = "COMMENT ON COLUMN " + escapeTableName("country") + ".name IS '{{ManyWhoName:The Name}}';";
             connection.createQuery(aliasName).executeUpdate();
 
@@ -44,16 +50,7 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadDataByExternalIdWithFilters() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("postgresql");
         try (Connection connection = getSql2o().open()) {
-            String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "("+
-                    "id integer NOT NULL,"+
-                    "name character varying(255)," +
-                    "description character varying(1024)," +
-                    "CONSTRAINT country_id_pk PRIMARY KEY (id)" +
-                    ");";
-            connection.createQuery(sqlCreateTable).executeUpdate();
-
             String sql = "INSERT INTO " + escapeTableName("country")+"(id, name, description) VALUES ('1', 'Uruguay', 'It is a nice country');";
             connection.createQuery(sql).executeUpdate();
 
@@ -70,10 +67,9 @@ public class LoadTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
-        } catch (ClassNotFoundException e) {
         }
     }
 }

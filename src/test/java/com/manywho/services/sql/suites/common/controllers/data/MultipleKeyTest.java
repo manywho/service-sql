@@ -44,7 +44,7 @@ public class MultipleKeyTest extends ServiceFunctionalTest {
 
     @Test
     public void testCreate() throws Exception {
-        
+
         DefaultApiRequest.saveDataRequestAndAssertion("/data",
                 "suites/common/data/multiple-primary-key/create/create-request.json",
                 configurationParameters(),
@@ -54,11 +54,9 @@ public class MultipleKeyTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("city", connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

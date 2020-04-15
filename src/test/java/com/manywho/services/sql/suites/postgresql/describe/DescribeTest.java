@@ -82,14 +82,13 @@ public class DescribeTest extends ServiceFunctionalTest {
     }
 
     @After
-    public void cleanDatabaseAfterEachTest() {
+    public void cleanDatabaseAfterEachTest() throws ClassNotFoundException {
         try (Connection connection = getSql2o().open()) {
             deleteTableIfExist("country", connection);
             deleteTableIfExist("country2", connection);
             deleteTableIfExist("emptytable", connection);
             deleteTableIfExist("notemptytable", connection);
             deleteTableIfExist("timetest", connection);
-        } catch (ClassNotFoundException e) {
         }
     }
 }
