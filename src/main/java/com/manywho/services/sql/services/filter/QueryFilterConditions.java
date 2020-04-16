@@ -96,10 +96,10 @@ public class QueryFilterConditions {
 
         switch (contentType) {
             case Boolean:
-                return new BooleanValueObject(Boolean.valueOf(contentValue));
+                return Boolean.valueOf(contentValue);
             case Number:
                 try {
-                    return new NumberValueObject(NumberFormat.getInstance().parse(contentValue));
+                    return NumberFormat.getInstance().parse(contentValue);
                 } catch (ParseException e) {
                     throw new RuntimeException(String.format("The value of %s is not a valid number", coulumnName));
                 }
