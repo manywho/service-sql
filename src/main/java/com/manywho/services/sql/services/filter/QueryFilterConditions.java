@@ -135,13 +135,13 @@ public class QueryFilterConditions {
                 placeHolderParameters.add(object);
                return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, true);
             case Contains:
-                placeHolderParameters.add("%" + filterWhere.getContentValue() + "%");
+                placeHolderParameters.add(prepareLike("%%%s%%", filterWhere.getContentValue()));
                return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case StartsWith:
-                placeHolderParameters.add(filterWhere.getContentValue() + "%");
+                placeHolderParameters.add(prepareLike("%s%%", filterWhere.getContentValue()));
                return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case EndsWith:
-                placeHolderParameters.add("%" + filterWhere.getContentValue());
+                placeHolderParameters.add(prepareLike("%%%s", filterWhere.getContentValue()));
                return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case IsEmpty:
                 if (Strings.isNullOrEmpty(filterWhere.getContentValue()) == false && filterWhere.getContentValue().toLowerCase().equals("true")) {
@@ -153,6 +153,14 @@ public class QueryFilterConditions {
                 break;
         }
         return null;
+    }
+
+    private String prepareLike(String pattern, String value) {
+        if (value == null || "".equals(value)) {
+            return "%%";
+        }
+
+        return String.format(pattern, value);
     }
 
     public void addOffset(SelectQuery selectQuery, DatabaseType databaseType, Integer offset, Integer limit) {
