@@ -12,7 +12,7 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Before
     public void setupTableCountryTable() throws Exception {
-        DbConfigurationTest.setPropertiesIfNotInitialized("sqlserver");
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
         try (Connection connection = getSql2o().open()) {
             String sqlCreateTable = "CREATE TABLE " + escapeTableName("country") + "("+
                             "id integer NOT NULL,"+
@@ -133,6 +133,44 @@ public class LoadTest extends ServiceFunctionalTest {
                 "suites/common/data/load/by-filter/escape/load-search-request.json",
                 configurationParameters(),
                 "suites/common/data/load/by-filter/escape/load-search-response.json",
+                dispatcher
+        );
+    }
+
+    @Test
+    public void testLoadDataByStartEndContains() throws Exception {
+
+        try (Connection connection = getSql2o().open()) {
+            String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
+                    "('1', 'country1''s, name', 'It''s a nice country')," +
+                    "('2', 'country2''s, name', 'It''s a beautiful country');";
+
+            connection.createQuery(sql).executeUpdate();
+        }
+
+        DefaultApiRequest.loadDataRequestAndAssertion("/data",
+                "suites/common/data/load/by-filter/start-end-contain/load-search-request.json",
+                configurationParameters(),
+                "suites/common/data/load/by-filter/start-end-contain/load-search-response.json",
+                dispatcher
+        );
+    }
+
+    @Test
+    public void testLoadDataByConditionNull() throws Exception {
+
+        try (Connection connection = getSql2o().open()) {
+            String sql = "INSERT INTO " + escapeTableName("country") + "(id, name, description) VALUES " +
+                    "('1', 'country1''s, name', 'It''s a nice country')," +
+                    "('2', 'country2''s, name', 'It''s a beautiful country');";
+
+            connection.createQuery(sql).executeUpdate();
+        }
+
+        DefaultApiRequest.loadDataRequestAndAssertion("/data",
+                "suites/common/data/load/by-filter/conditions-null/load-search-request.json",
+                configurationParameters(),
+                "suites/common/data/load/by-filter/conditions-null/load-search-response.json",
                 dispatcher
         );
     }
