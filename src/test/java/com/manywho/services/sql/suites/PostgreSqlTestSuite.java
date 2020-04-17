@@ -1,12 +1,13 @@
 package com.manywho.services.sql.suites;
 
 import com.manywho.services.sql.DbConfigurationTest;
+import com.manywho.services.sql.suites.common.controllers.data.*;
 import com.manywho.services.sql.suites.common.controllers.data.LoadTest;
-import com.manywho.services.sql.suites.common.controllers.data.LoadWithoutOrderBy;
-import com.manywho.services.sql.suites.common.controllers.data.MultipleKeyTest;
 import com.manywho.services.sql.suites.common.controllers.data.SaveTest;
 import com.manywho.services.sql.suites.common.controllers.describe.DescribeTest;
+import com.manywho.services.sql.suites.mysql.data.LoadBooleanTest;
 import com.manywho.services.sql.suites.postgresql.data.*;
+import com.manywho.services.sql.suites.postgresql.data.DeleteTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,8 +19,10 @@ import org.junit.runners.Suite;
         MultipleKeyTest.class,
         SaveTest.class,
         DescribeTest.class,
+        LoadTypesWithFilter.class,
         LoadWithoutOrderBy.class, // not for SqlServer
         //postgresql
+        LoadBooleanTest.class,
         DateTimeTest.class,
         UuidTest.class,
         CapitalLetterTest.class,

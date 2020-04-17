@@ -18,6 +18,7 @@ import com.manywho.services.sql.utilities.ScapeForTablesUtil;
 import java.sql.JDBCType;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,15 +85,12 @@ public class QueryFilterConditions {
         }
     }
 
-    private Object prepareObjectForMysql(DatabaseType databaseType, TableMetadata tableMetadata, String coulumnName, String contentValue) {
-        if (databaseType != DatabaseType.Mysql) {
-            return contentValue;
-        }
-
-        // postgres automatically cast to the right value here
-        // todo check behaviour of SQL Server
-
+    private Object parseParameterObject(TableMetadata tableMetadata, String coulumnName, String contentValue) {
         ContentType contentType = tableMetadata.getColumns().getOrDefault(coulumnName, ContentType.String);
+
+        if (contentValue == null) {
+            return null;
+        }
 
         switch (contentType) {
             case Boolean:
@@ -103,6 +101,8 @@ public class QueryFilterConditions {
                 } catch (ParseException e) {
                     throw new RuntimeException(String.format("The value of %s is not a valid number", coulumnName));
                 }
+            case DateTime:
+                return OffsetDateTime.parse(contentValue);
             default:
                 return contentValue;
         }
@@ -112,7 +112,7 @@ public class QueryFilterConditions {
     private Condition getConditionFromFilterElement(QueryPreparer preparer, ListFilterWhere filterWhere, DatabaseType databaseType,
                                                     TableMetadata tableMetadata, List<Object> placeHolderParameters) {
 
-        Object object = prepareObjectForMysql(databaseType, tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
+        Object object = parseParameterObject(tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
         SqlObject placeHolder = preparer.getNewMultiPlaceHolder();
 
         switch (filterWhere.getCriteriaType()) {
