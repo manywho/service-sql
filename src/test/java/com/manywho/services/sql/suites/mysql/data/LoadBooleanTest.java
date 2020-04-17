@@ -8,11 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class LoadTest extends ServiceFunctionalTest {
+public class LoadBooleanTest extends ServiceFunctionalTest {
 
     @Before
     public void setupTableCountryTable() throws Exception {
@@ -35,7 +34,7 @@ public class LoadTest extends ServiceFunctionalTest {
 
     @Test
     public void testLoadWithBooleanAndIntFilter() throws JSONException, IOException, URISyntaxException {
-
+        DbConfigurationTest.setPropertiesIfNotInitialized("mysql");
         DefaultApiRequest.loadDataRequestAndAssertion("/data",
                 "suites/mysql/load-bool-int/load-request.json",
                 configurationParameters(),

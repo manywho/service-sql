@@ -1,0 +1,167 @@
+{
+  "stateId": null,
+  "token": null,
+  "typeElementBindingId": null,
+  "authorization": {
+    "users": null,
+    "groups": null,
+    "runningAuthenticationId": null,
+    "globalAuthenticationType": "PUBLIC"
+  },
+  "configurationValues": [
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Password",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{password}}",
+      "contentType": "ContentPassword",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Database Type",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{databaseType}}",
+      "contentType": "ContentString",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Database Name",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{databaseName}}",
+      "contentType": "ContentString",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Port",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{port}}",
+      "contentType": "ContentNumber",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Host",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{host}}",
+      "contentType": "ContentString",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Database Schema",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{schema}}",
+      "contentType": "ContentString",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "Username",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "{{userName}}",
+      "contentType": "ContentString",
+      "objectData": []
+    },
+    {
+      "valueElementId": null,
+      "typeElementId": null,
+      "typeElementPropertyId": null,
+      "developerName": "No SSL",
+      "typeElementDeveloperName": null,
+      "typeElementPropertyDeveloperName": null,
+      "contentValue": "true",
+      "contentType": null,
+      "objectData": []
+    }
+  ],
+  "command": null,
+  "culture": {
+    "id": null,
+    "developerName": null,
+    "developerSummary": null,
+    "brand": null,
+    "language": "EN",
+    "country": "USA",
+    "variant": null
+  },
+  "listFilter": {
+    "comparisonType": "AND",
+    "filterByProvidedObjects": false,
+    "id": null,
+    "limit": 10,
+    "listFilters": [],
+    "offset": 0,
+    "offsetToken": null,
+    "orderBy": [],
+    "orderByDirectionType": null,
+    "orderByPropertyDeveloperName": "description",
+    "search": null,
+    "searchCriteria": [],
+    "where": [
+      {
+        "columnName": "id",
+        "contentValue": "1",
+        "criteriaType": "EQUAL",
+        "objectData": null,
+        "value": "0"
+      },
+      {
+        "columnName": "date_at",
+        "contentValue": "2020-01-21T00:00:00Z",
+        "criteriaType": "EQUAL",
+        "objectData": null,
+        "value": "0"
+      }
+    ]
+  },
+  "objectData": null,
+  "objectDataType": {
+    "developerName": "country",
+    "properties": [
+      {
+        "developerName": "id",
+        "list": null
+      },
+      {
+        "developerName": "date_at",
+        "list": null
+      },
+      {
+        "developerName": "name",
+        "list": null
+      },
+      {
+        "developerName": "description",
+        "list": null
+      }
+    ],
+    "typeElementId": "ec2ad337-6ba2-4a80-8edc-0ac35671ccef"
+  },
+  "stateId": "5a0ce32d-88b3-4a5e-9f8b-63ab4cc7bfe2",
+  "token": null,
+  "typeElementBindingId": "8624fd9b-94c1-454c-a2f8-0488b026a3c9"
+}
