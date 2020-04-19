@@ -16,7 +16,7 @@ public class PrimaryKeyService {
     public HashMap<String, String> deserializePrimaryKey(String serializedPrimaryKey) {
         try {
             byte[] decoded = Base64.decodeBase64(serializedPrimaryKey.getBytes());
-            return objectMapper.readValue(new String(decoded, "UTF-8"), new TypeReference<HashMap<String,Object>>() {});
+            return objectMapper.readValue(new String(decoded, "UTF-8"), new TypeReference<HashMap<String,String>>() {});
 
         } catch (Exception e) {
             throw new RuntimeException("The primary key is not valid. It should be a JSON object, then Base64 encoded, e.g. {\"id\": 1} would become eyJpZCI6MX0=", e);

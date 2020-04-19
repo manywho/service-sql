@@ -1,6 +1,7 @@
 package com.manywho.services.sql.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.manywho.sdk.api.draw.content.Command;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
 import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataType;
@@ -43,7 +44,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public MObject create(ServiceConfiguration configuration, MObject object) {
+    public MObject create(ServiceConfiguration configuration, ObjectDataType objectDataType, MObject object) {
 
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
 
@@ -71,12 +72,12 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public List<MObject> create(ServiceConfiguration configuration, List<MObject> objects) {
+    public List<MObject> create(ServiceConfiguration configuration, ObjectDataType objectDataType, List<MObject> objects) {
         return null;
     }
 
     @Override
-    public void delete(ServiceConfiguration configuration, MObject object) {
+    public void delete(ServiceConfiguration configuration, ObjectDataType objectDataType, MObject object) {
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
         try (Connection connection = sql2o.open()) {
 
@@ -96,14 +97,14 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public void delete(ServiceConfiguration configuration, List<MObject> objects) {
+    public void delete(ServiceConfiguration configuration, ObjectDataType objectDataType, List<MObject> objects) {
         //todo delete list of object;
 
         return;
     }
 
     @Override
-    public MObject find(ServiceConfiguration configuration, ObjectDataType objectDataType, String id) {
+    public MObject find(ServiceConfiguration configuration, ObjectDataType objectDataType, Command command, String id) {
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
 
         try (Connection connection = sql2o.open()) {
@@ -124,7 +125,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public List<MObject> findAll(ServiceConfiguration configuration, ObjectDataType objectDataType, ListFilter filter) {
+    public List<MObject> findAll(ServiceConfiguration configuration, ObjectDataType objectDataType, Command command, ListFilter filter, List<MObject> objects) {
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
 
         try (Connection connection = sql2o.open()) {
@@ -142,7 +143,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public MObject update(ServiceConfiguration configuration, MObject object) {
+    public MObject update(ServiceConfiguration configuration, ObjectDataType objectDataType, MObject object) {
         Sql2o sql2o = ConnectionManager.getSql2Object(configuration);
 
         try (Connection connection = sql2o.open()) {
@@ -171,7 +172,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     }
 
     @Override
-    public List<MObject> update(ServiceConfiguration configuration, List<MObject> objects) {
+    public List<MObject> update(ServiceConfiguration configuration, ObjectDataType objectDataType, List<MObject> objects) {
         return null;
     }
 }
