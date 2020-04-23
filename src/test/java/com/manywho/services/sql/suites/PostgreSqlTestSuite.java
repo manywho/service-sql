@@ -22,7 +22,7 @@ import org.junit.runners.Suite;
         LoadTypesWithFilter.class,
         LoadWithoutOrderBy.class, // not for SqlServer
         //postgresql
-        LoadSpecialForPostgresTest.class,
+        LoadIsNullAndUuuidForPostgresTest.class,
         LoadBooleanTest.class,
         DateTimeTest.class,
         UuidTest.class,
