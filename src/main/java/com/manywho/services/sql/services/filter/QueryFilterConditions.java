@@ -8,6 +8,7 @@ import com.healthmarketscience.sqlbuilder.custom.postgresql.PgOffsetClause;
 
 import com.manywho.sdk.api.ComparisonType;
 import com.manywho.sdk.api.ContentType;
+import com.manywho.sdk.api.CriteriaType;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
 import com.manywho.sdk.api.run.elements.type.ListFilterWhere;
 import com.manywho.sdk.api.run.elements.type.ObjectDataTypeProperty;
@@ -19,10 +20,7 @@ import java.sql.JDBCType;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class QueryFilterConditions {
@@ -104,6 +102,11 @@ public class QueryFilterConditions {
             case DateTime:
                 return OffsetDateTime.parse(contentValue);
             default:
+                // this special case is for postgres uuid value
+                if ("uuid".equals(tableMetadata.getColumnsDatabaseType().get(coulumnName))) {
+                    return UUID.fromString(contentValue);
+                }
+
                 return contentValue;
         }
 
@@ -111,9 +114,14 @@ public class QueryFilterConditions {
 
     private Condition getConditionFromFilterElement(QueryPreparer preparer, ListFilterWhere filterWhere, DatabaseType databaseType,
                                                     TableMetadata tableMetadata, List<Object> placeHolderParameters) {
+        Object object = null;
+        SqlObject placeHolder = null;
 
-        Object object = parseParameterObject(tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
-        SqlObject placeHolder = preparer.getNewMultiPlaceHolder();
+        //we don't use the value for is_empty because it will be transformed IS NOT NULL or IS NULL
+        if (filterWhere.getCriteriaType() != CriteriaType.IsEmpty) {
+            object = parseParameterObject(tableMetadata, filterWhere.getColumnName(), filterWhere.getContentValue());
+            placeHolder = preparer.getNewMultiPlaceHolder();
+        }
 
         switch (filterWhere.getCriteriaType()) {
             case Equal:
