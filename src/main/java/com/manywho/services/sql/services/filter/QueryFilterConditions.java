@@ -83,8 +83,8 @@ public class QueryFilterConditions {
         }
     }
 
-    private Object parseParameterObject(TableMetadata tableMetadata, String coulumnName, String contentValue) {
-        ContentType contentType = tableMetadata.getColumns().getOrDefault(coulumnName, ContentType.String);
+    private Object parseParameterObject(TableMetadata tableMetadata, String columnName, String contentValue) {
+        ContentType contentType = tableMetadata.getColumns().getOrDefault(columnName, ContentType.String);
 
         if (contentValue == null) {
             return null;
@@ -97,13 +97,13 @@ public class QueryFilterConditions {
                 try {
                     return NumberFormat.getInstance().parse(contentValue);
                 } catch (ParseException e) {
-                    throw new RuntimeException(String.format("The value of %s is not a valid number", coulumnName));
+                    throw new RuntimeException(String.format("The value of %s is not a valid number", columnName));
                 }
             case DateTime:
                 return OffsetDateTime.parse(contentValue);
             default:
                 // this special case is for postgres uuid value
-                if ("uuid".equals(tableMetadata.getColumnsDatabaseType().get(coulumnName))) {
+                if ("uuid".equals(tableMetadata.getColumnsDatabaseType().get(columnName))) {
                     return UUID.fromString(contentValue);
                 }
 

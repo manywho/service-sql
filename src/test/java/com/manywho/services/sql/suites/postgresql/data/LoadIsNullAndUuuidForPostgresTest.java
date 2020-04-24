@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 
-public class LoadSpecialForPostgresTest extends ServiceFunctionalTest {
+public class LoadIsNullAndUuuidForPostgresTest extends ServiceFunctionalTest {
 
     @Before
     public void createTable() throws ClassNotFoundException {
@@ -32,9 +32,9 @@ public class LoadSpecialForPostgresTest extends ServiceFunctionalTest {
             connection.createQuery(sql).executeUpdate();
         }
         DefaultApiRequest.loadDataRequestAndAssertion("/data",
-                "suites/postgresql/dates/timestamp/request-dates.json",
+                "suites/postgresql/dates/isnull/request-dates.json",
                 configurationParameters(),
-                "suites/postgresql/dates/timestamp/response-dates.json",
+                "suites/postgresql/dates/isnull/response-dates.json",
                 dispatcher
         );
     }
