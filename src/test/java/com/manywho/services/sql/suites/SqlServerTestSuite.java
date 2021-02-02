@@ -10,6 +10,7 @@ import com.manywho.services.sql.suites.sqlserver.data.AutoIncrementTest;
 import com.manywho.services.sql.suites.sqlserver.data.DateTimeTest;
 import com.manywho.services.sql.suites.sqlserver.data.CapitalLetterTest;
 import com.manywho.services.sql.suites.sqlserver.describe.DescribeTest;
+import com.manywho.services.sql.suites.sqlserver.data.SearchTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -25,7 +26,8 @@ import org.junit.runners.Suite;
         DescribeTest.class,
         DateTimeTest.class,
         CapitalLetterTest.class,
-        AutoIncrementTest.class
+        AutoIncrementTest.class,
+        SearchTest.class
 })
 public class SqlServerTestSuite {
     @BeforeClass

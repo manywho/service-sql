@@ -1,0 +1,160 @@
+{
+    "stateId": null,
+    "token": null,
+    "typeElementBindingId": null,
+    "authorization": {
+        "users": null,
+        "groups": null,
+        "runningAuthenticationId": null,
+        "globalAuthenticationType": "PUBLIC"
+    },
+    "configurationValues": [
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Password",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{password}}",
+            "contentType": "ContentPassword",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Database Type",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{databaseType}}",
+            "contentType": "ContentString",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Database Name",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{databaseName}}",
+            "contentType": "ContentString",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Port",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{port}}",
+            "contentType": "ContentNumber",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Host",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{host}}",
+            "contentType": "ContentString",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Database Schema",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{schema}}",
+            "contentType": "ContentString",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "Username",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "{{userName}}",
+            "contentType": "ContentString",
+            "objectData": null
+        },
+        {
+            "valueElementId": null,
+            "typeElementId": null,
+            "typeElementPropertyId": null,
+            "developerName": "No SSL",
+            "typeElementDeveloperName": null,
+            "typeElementPropertyDeveloperName": null,
+            "contentValue": "true",
+            "contentType": null,
+            "objectData": null
+        }
+    ],
+    "command": null,
+    "culture": {
+        "id": null,
+        "developerName": null,
+        "developerSummary": null,
+        "brand": null,
+        "language": "EN",
+        "country": "USA",
+        "variant": null
+    },
+    "listFilter": {
+        "id": null,
+        "filterByProvidedObjects": false,
+        "orderByPropertyDeveloperName": "id",
+        "orderByDirectionType": "",
+        "orderBy": null,
+        "limit": 0,
+        "offset": 0,
+        "search": null,
+        "searchCriteria": null,
+        "comparisonType": "OR",
+        "where": null,
+        "listFilters": null
+    },
+    "objectDataType": {
+        "typeElementId": "737809a7-5825-4b04-8d38-b271963732e5",
+        "developerName": "searchtest",
+        "properties": [
+            {
+                "developerName": "id",
+                "list": null
+            },
+            {
+                "developerName": "col_char",
+                "list": null
+            },
+            {
+                "developerName": "col_nchar",
+                "list": null
+            },
+            {
+                "developerName": "col_varchar",
+                "list": null
+            },
+            {
+                "developerName": "col_nvarchar",
+                "list": null
+            },
+            {
+                "developerName": "col_text",
+                "list": null
+            },
+            {
+                "developerName": "col_ntext",
+                "list": null
+            }
+        ]
+    },
+    "objectData": null
+}

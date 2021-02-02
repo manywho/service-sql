@@ -50,3 +50,9 @@ com_crashlytics_export_strings.xml
 # Generated properties
 *.properties
 dependency-reduced-pom.xml
+
+# VSCode
+.classpath
+.project
+.settings
+.vscode
