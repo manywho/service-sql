@@ -35,6 +35,8 @@ public class QueryFilterConditions {
         Map<String, String> stringishColumns = columns.entrySet().stream()
                 .filter(column -> column.getValue().equals(JDBCType.VARCHAR.getName()) ||
                                     column.getValue().equals(JDBCType.NVARCHAR.getName()) ||
+                                    column.getValue().equals(JDBCType.CHAR.getName()) ||
+                                    column.getValue().equals(JDBCType.NCHAR.getName()) ||
                                     column.getValue().equals(JDBCType.LONGVARCHAR.getName()) ||
                                     column.getValue().equals(JDBCType.LONGNVARCHAR.getName()))
                 .collect(Collectors.toMap(

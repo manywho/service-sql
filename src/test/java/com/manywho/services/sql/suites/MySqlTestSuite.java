@@ -7,6 +7,7 @@ import com.manywho.services.sql.suites.mysql.data.AutoIncrementTest;
 import com.manywho.services.sql.suites.mysql.data.CapitalLetterTest;
 import com.manywho.services.sql.suites.mysql.data.LoadBooleanTest;
 import com.manywho.services.sql.suites.mysql.describe.DescribeViewTest;
+import com.manywho.services.sql.suites.mysql.data.SearchTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -26,7 +27,8 @@ import org.junit.runners.Suite;
         LoadBooleanTest.class,
         com.manywho.services.sql.suites.mysql.describe.DescribeTest.class,
         com.manywho.services.sql.suites.mysql.data.SaveTest.class,
-        DescribeViewTest.class
+        DescribeViewTest.class,
+        SearchTest.class
 })
 public class MySqlTestSuite {
     @BeforeClass

@@ -1,0 +1,72 @@
+{
+    "culture": null,
+    "hasMoreResults": false,
+    "objectData": [
+        {
+            "internalId": null,
+            "externalId": "eyJpZCI6IjIifQ==",
+            "developerName": "searchtest",
+            "typeElementId": null,
+            "order": 0,
+            "properties": [
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "id",
+                    "contentType": "ContentNumber",
+                    "contentValue": "2",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_char",
+                    "contentType": "ContentString",
+                    "contentValue": "xxxx",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_varchar",
+                    "contentType": "ContentString",
+                    "contentValue": "bbbb",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_tinytext",
+                    "contentType": "ContentString",
+                    "contentValue": "xxxx",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_text",
+                    "contentType": "ContentString",
+                    "contentValue": "xxxx",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_mediumtext",
+                    "contentType": "ContentString",
+                    "contentValue": "xxxx",
+                    "contentFormat": null,
+                    "objectData": []
+                },
+                {
+                    "typeElementPropertyId": null,
+                    "developerName": "col_longtext",
+                    "contentType": "ContentString",
+                    "contentValue": "xxxx",
+                    "contentFormat": null,
+                    "objectData": []
+                }
+            ],
+            "isSelected": false
+        }
+    ]
+}
