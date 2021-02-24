@@ -82,7 +82,8 @@ public class QueryParameterService {
                 return query.addParameter(paramName, parameterValue);
 
             case DATE:
-                DateTime dateTime = new DateTime( parameterValue) ;
+                // Best assumption we can make is an 'empty' string means today.
+                DateTime dateTime = new DateTime(parameterValue == null || parameterValue.trim().isEmpty() ? null : parameterValue) ;
                 return query.addParameter(paramName, dateTime);
             case TIME:
                 throw new DataBaseTypeNotSupported("TIME");

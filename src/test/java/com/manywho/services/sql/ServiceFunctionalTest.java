@@ -1,6 +1,9 @@
 package com.manywho.services.sql;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manywho.sdk.services.jaxrs.resolvers.ObjectMapperContextResolver;
+import com.manywho.services.sql.date.DateSerializer;
+
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.junit.BeforeClass;
@@ -74,6 +77,7 @@ public abstract class ServiceFunctionalTest {
         replacements.put("{{userName}}", DbConfigurationTest.userName);
         replacements.put("{{password}}", DbConfigurationTest.password);
         replacements.put("{{databaseName}}", DbConfigurationTest.databaseNameForTest);
+        replacements.put("{{sql-today}}", DateSerializer.serializeDate("today", new java.sql.Date(System.currentTimeMillis())));
 
         return  replacements;
     }

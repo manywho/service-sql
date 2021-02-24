@@ -61,19 +61,24 @@ public class DefaultApiRequest {
         return response;
     }
 
-    public static void saveDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> requestReplacements, String expectedResponsePathFile, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {
+    public static void saveDataRequestAndAssertion(String url, String requestPathFile, HashMap<String, String> replacements, String expectedResponsePathFile, Dispatcher dispatcher) throws IOException, URISyntaxException, JSONException {
 
         ObjectMapper objectMapper = new ObjectMapperContextResolver().getContext(null);
         MockHttpResponse response = new MockHttpResponse();
 
         MockHttpRequest request = MockHttpRequest.put(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(getObjectDataRequestFromFile(requestPathFile,requestReplacements)));
+                .content(objectMapper.writeValueAsBytes(getObjectDataRequestFromFile(requestPathFile, replacements)));
 
         dispatcher.invoke(request, response);
 
+        String expectedResponse = JsonFormatUtil.getFileContentAsJson(expectedResponsePathFile);
+        for(String key: replacements.keySet()) {
+            expectedResponse = expectedResponse.replace(key, replacements.get(key));
+        }
+
         JSONAssert.assertEquals(
-                JsonFormatUtil.getFileContentAsJson(expectedResponsePathFile),
+                expectedResponse,
                 response.getContentAsString(),
                 false
         );

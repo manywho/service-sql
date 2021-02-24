@@ -124,16 +124,8 @@
   },
   "objectDataType": {
     "typeElementId": "dc0dcf14-1bf6-4faf-b5ee-0d2aa58cd02e",
-    "developerName": "timetest",
+    "developerName": "datetest",
     "properties": [
-      {
-        "developerName": "datetime",
-        "list": null
-      },
-      {
-        "developerName": "datetime2",
-        "list": null
-      },
       {
         "developerName": "date_only",
         "list": null
@@ -148,34 +140,10 @@
     {
       "internalId": "31a48875-bc12-4a59-8fc5-16c37a801ad3",
       "externalId": "eyJpZCI6IjEifQ==",
-      "developerName": "timetest",
+      "developerName": "datetest",
       "typeElementId": "dc0dcf14-1bf6-4faf-b5ee-0d2aa58cd02e",
       "order": 0,
       "properties": [
-        {
-          "typeElementPropertyId": "162fe6a7-2b25-450f-8c40-10f585e25b6f",
-          "developerName": "datetime",
-          "contentValue": "2016-06-27T09:23:00+00:00",
-          "contentType": "ContentDateTime",
-          "contentFormat": "",
-          "objectData": null
-        },
-        {
-          "typeElementPropertyId": "162fe6a7-2b25-450f-8c40-10f585e25b6f",
-          "developerName": "datetime2",
-          "contentValue": "2016-06-27T09:23:00+00:00",
-          "contentType": "ContentDateTime",
-          "contentFormat": "",
-          "objectData": null
-        },
-        {
-          "typeElementPropertyId": "162fe6a7-2b25-450f-8c40-10f585e25b6f",
-          "developerName": "datetimeoffset",
-          "contentValue": "2016-06-27T09:23:00+02:00",
-          "contentType": "ContentDateTime",
-          "contentFormat": "",
-          "objectData": null
-        },
         {
             "typeElementPropertyId": "162fe6a7-2b25-450f-8c40-10f585e25b6f",
             "developerName": "date_only",
