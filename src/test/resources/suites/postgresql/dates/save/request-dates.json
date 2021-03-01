@@ -135,6 +135,10 @@
         "list": null
       },
       {
+        "developerName": "date_only",
+        "list": null
+      },
+      {
         "developerName": "id",
         "list": null
       }
@@ -163,6 +167,14 @@
           "contentType": "ContentDateTime",
           "contentFormat": "",
           "objectData": null
+        },
+        {
+            "typeElementPropertyId": "162fe6a7-2b25-450f-8c40-10f585e25b6f",
+            "developerName": "date_only",
+            "contentValue": "",
+            "contentType": "ContentDateTime",
+            "contentFormat": "",
+            "objectData": null
         },
         {
           "typeElementPropertyId": "adbde9f2-3bc2-4be5-8bd8-a3f0a4953e40",

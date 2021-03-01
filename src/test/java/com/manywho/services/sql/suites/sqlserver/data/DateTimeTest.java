@@ -52,13 +52,14 @@ public class DateTimeTest extends ServiceFunctionalTest {
                     "datetime datetime," +
                     "datetime2 datetime2," +
                     "datetimeoffset datetimeoffset," +
+                    "date_only DATE," +
                     "CONSTRAINT timetest_id_pk PRIMARY KEY (id)" +
                     ");";
 
             connection.createQuery(sqlCreate).executeUpdate();
 
-            String sql = "INSERT INTO " + escapeTableName("timetest") +"(id, datetime, datetime2, datetimeoffset) VALUES " +
-                    "('1', '2007-05-08 12:35:29.123', '2007-05-08 12:35:29. 1234567', '2007-05-08T12:35:29.123+00:02');";
+            String sql = "INSERT INTO " + escapeTableName("timetest") +"(id, datetime, datetime2, datetimeoffset, date_only) VALUES " +
+                    "('1', '2007-05-08 12:35:29.123', '2007-05-08 12:35:29. 1234567', '2007-05-08T12:35:29.123+00:02', '2020-01-01');";
 
             connection.createQuery(sql).executeUpdate();
         }

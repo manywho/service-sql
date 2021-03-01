@@ -34,6 +34,13 @@
       "contentValue": "2016-06-27T09:23:00Z",
       "contentFormat": null,
       "objectData": []
+    }, {
+        "typeElementPropertyId": null,
+        "developerName": "date_only",
+        "contentType": "ContentDateTime",
+        "contentValue": "{{sql-today}}",
+        "contentFormat": null,
+        "objectData": []
     }],
     "isSelected": false
   }],

@@ -55,12 +55,13 @@ public class DateTimeTest extends ServiceFunctionalTest {
                     "time_without_timezone time without time zone," +
                     "timestamp_with_timezone timestamp with time zone," +
                     "timestamp_without_timezone timestamp without time zone," +
+                    "date_only DATE," +
                     "CONSTRAINT timetest_id_pk PRIMARY KEY (id)" +
                     ");";
             connection.createQuery(sqlCreate).executeUpdate();
 
-            String sql = "INSERT INTO " + escapeTableName("timetest") +"(id, time_with_timezone, time_without_timezone, timestamp_with_timezone, timestamp_without_timezone) VALUES " +
-                    "('1', '2012-05-24 14:09:08 +02:00', '2013-06-25 15:10:09 +02:00', '2014-07-26 14:00:00 +02:00', '2014-07-26 14:00:00');";
+            String sql = "INSERT INTO " + escapeTableName("timetest") +"(id, time_with_timezone, time_without_timezone, timestamp_with_timezone, timestamp_without_timezone, date_only) VALUES " +
+                    "('1', '2012-05-24 14:09:08 +02:00', '2013-06-25 15:10:09 +02:00', '2014-07-26 14:00:00 +02:00', '2014-07-26 14:00:00', '2020-01-01');";
 
             connection.createQuery(sql).executeUpdate();
         }
