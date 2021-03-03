@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>7.0.0.jre8</version>
+            <version>9.2.1.jre15</version>
         </dependency>
         <dependency>
             <groupId>org.sql2o.extensions</groupId>
