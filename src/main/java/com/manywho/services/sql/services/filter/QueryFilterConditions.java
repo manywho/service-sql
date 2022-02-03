@@ -145,7 +145,8 @@ public class QueryFilterConditions {
                 placeHolderParameters.add(object);
                return BinaryCondition.lessThan(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder, true);
             case Contains:
-                placeHolderParameters.add(prepareLike("%%%s%%", fixCharacterEscapes(filterWhere.getContentValue())));
+                String contentValue = (filterWhere.getContentValue() != null) ? filterWhere.getContentValue() : "";
+                placeHolderParameters.add(prepareLike("%%%s%%", fixCharacterEscapes(contentValue)));
                return BinaryCondition.like(new CustomSql(ScapeForTablesUtil.scapeCollumnName(databaseType, filterWhere.getColumnName())), placeHolder);
             case StartsWith:
                 placeHolderParameters.add(prepareLike("%s%%", fixCharacterEscapes(filterWhere.getContentValue())));
