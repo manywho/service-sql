@@ -23,7 +23,7 @@ public class Application extends Servlet3Server  {
 
         server.addModule(new ApplicationSqlModule());
         server.setApplication(Application.class);
-        server.start();
+        server.start("/api/sql/2");
     }
 
     private static void checkDriverClass(String driverRef) {
