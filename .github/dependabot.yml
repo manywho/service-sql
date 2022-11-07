@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+    timezone: Europe/London
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.microsoft.sqlserver:mssql-jdbc
+    versions:
+    - 9.1.1.jre15-preview
+    - 9.2.0.jre15
+    - 9.2.1.jre15
+  - dependency-name: org.postgresql:postgresql
+    versions:
+    - 42.2.18
+    - 42.2.19
+  - dependency-name: joda-time:joda-time
+    versions:
+    - 2.10.9
